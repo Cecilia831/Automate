@@ -4,7 +4,9 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GemBox.Spreadsheet;
+using ExcelDataReader;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium;
 
 
 namespace Automate
