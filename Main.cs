@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GemBox.Spreadsheet;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium;
 
 namespace Automate
 {
