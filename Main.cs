@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using GemBox.Spreadsheet;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
+using System.Windows.Documents;
+using static System.Collections.Specialized.BitVector32;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace Automate
 {
@@ -14,11 +17,29 @@ namespace Automate
     {
         static void Main()
         {
+            OpenSheet();
+            LogIn();
+           
+        }
+
+        static void LogIn() {
+            var d = new ChromeDriver();
+            d.Navigate().GoToUrl("https://buildertrend.net/summaryGrid.aspx");
+            //user name:lisa@sprucebox.com
+            //password:SB12345$
+            d.FindElement(By.Id("username")).SendKeys("lisa@sprucebox.com");
+            d.FindElement(By.Id("password")).SendKeys("SB12345$");
+            var button = d.FindElement(By.ClassName("ant-btn-primary"));
+            button.Click();
+            d.Quit();
+        }
+
+        static void OpenSheet() {
 
             SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
 
             // Load Excel workbook from file's path.
-            ExcelFile workbook = ExcelFile.Load("HelloWorld.xlsx");
+            ExcelFile workbook = ExcelFile.Load("Username Password.xlsx");
 
             // Iterate through all worksheets in a workbook.
             foreach (ExcelWorksheet worksheet in workbook.Worksheets)
@@ -47,6 +68,6 @@ namespace Automate
                     Console.WriteLine();
                 }
             }
-        } 
+        }
     }
 }
