@@ -22,8 +22,9 @@ namespace Automate
 
             BuildSheet();
             ReadInputRow();
-            DisplaySheet();
+            //DisplaySheet();
             LogIn();
+            FinancialBillsPOs();
             var r = ReadInputRow();
             Console.WriteLine(r);
            
@@ -103,7 +104,13 @@ namespace Automate
 
         static void LogIn()
         {
-            var d = new ChromeDriver();
+            //Disabled all Chrome-level notifications
+            ChromeOptions options = new ChromeOptions();
+            options.AddArguments("--disable-extensions"); // to disable extension
+            options.AddArguments("--disable-notifications"); // to disable notification
+            options.AddArguments("--disable-application-cache"); // to disable cache
+            
+            var d = new ChromeDriver(options);
             d.Navigate().GoToUrl("https://buildertrend.net/summaryGrid.aspx");
             //d.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             //user name:lisa@sprucebox.com
@@ -114,5 +121,12 @@ namespace Automate
             button.Click();
             //d.Quit();
         }
+
+        static void FinancialBillsPOs() {
+        
+        }
     }
 }
+
+
+
