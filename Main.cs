@@ -10,6 +10,7 @@ using OpenQA.Selenium;
 using System.Windows.Documents;
 using static System.Collections.Specialized.BitVector32;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
+using static Automate.Program;
 
 namespace Automate
 {
@@ -22,9 +23,17 @@ namespace Automate
             BuildSheet();
             ReadInputRow();
             DisplaySheet();
-            //LogIn();
+            LogIn();
+            var r = ReadInputRow();
+            Console.WriteLine(r);
+           
         }
 
+        public static class Globals
+        {
+            public const Int32 N = 7; 
+        }
+       
         static void BuildSheet() {
             ExcelFile workbook = ExcelFile.Load("Input sheet.xlsx");
             ExcelWorksheet worksheet = workbook.Worksheets.First();
@@ -33,7 +42,7 @@ namespace Automate
 
             worksheet.Cells[0, 0].Value = "Title";
             worksheet.Cells[0 ,1].Value = "Assigned to";
-            worksheet.Cells[0, 2].Value = "Title";
+            worksheet.Cells[0, 2].Value = "Title2";
             worksheet.Cells[0, 3].Value = "Cost Code";
             worksheet.Cells[0, 4].Value = "Unit Cost";
             worksheet.Cells[0, 5].Value = "Invoice Date";
@@ -41,16 +50,19 @@ namespace Automate
             workbook.Save("Input sheet.xlsx");
         }
 
-        static void ReadInputRow()
+        static IDictionary<string, string> ReadInputRow()
         {
             ExcelFile workbook = ExcelFile.Load("Input sheet.xlsx");
             ExcelWorksheet worksheet = workbook.Worksheets.First();
-            ExcelRow row = worksheet.Rows.First();
-            ExcelCell cell = row.Cells.First();
 
-            worksheet.Cells[0, 0].Value = "Title";
-
-
+            int i = 0;
+            IDictionary<string, string> row = new Dictionary<string, string>();
+            while (i < Globals.N)
+            {
+                row.Add(worksheet.Cells[0, i].ToString(), worksheet.Cells[1,i].ToString());
+                i++;
+            }
+            return row;
         }
 
         static void DisplaySheet() {
@@ -93,6 +105,7 @@ namespace Automate
         {
             var d = new ChromeDriver();
             d.Navigate().GoToUrl("https://buildertrend.net/summaryGrid.aspx");
+            //d.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             //user name:lisa@sprucebox.com
             //password:SB12345$
             d.FindElement(By.Id("username")).SendKeys("lisa@sprucebox.com");
