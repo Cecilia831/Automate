@@ -17,29 +17,46 @@ namespace Automate
     {
         static void Main()
         {
-            OpenSheet();
-            LogIn();
-           
-        }
-
-        static void LogIn() {
-            var d = new ChromeDriver();
-            d.Navigate().GoToUrl("https://buildertrend.net/summaryGrid.aspx");
-            //user name:lisa@sprucebox.com
-            //password:SB12345$
-            d.FindElement(By.Id("username")).SendKeys("lisa@sprucebox.com");
-            d.FindElement(By.Id("password")).SendKeys("SB12345$");
-            var button = d.FindElement(By.ClassName("ant-btn-primary"));
-            button.Click();
-            d.Quit();
-        }
-
-        static void OpenSheet() {
-
             SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
 
+            BuildSheet();
+            ReadInputRow();
+            DisplaySheet();
+            //LogIn();
+        }
+
+        static void BuildSheet() {
+            ExcelFile workbook = ExcelFile.Load("Input sheet.xlsx");
+            ExcelWorksheet worksheet = workbook.Worksheets.First();
+            ExcelRow row = worksheet.Rows.First();
+            ExcelCell cell = row.Cells.First();
+
+            worksheet.Cells[0, 0].Value = "Title";
+            worksheet.Cells[0 ,1].Value = "Assigned to";
+            worksheet.Cells[0, 2].Value = "Title";
+            worksheet.Cells[0, 3].Value = "Cost Code";
+            worksheet.Cells[0, 4].Value = "Unit Cost";
+            worksheet.Cells[0, 5].Value = "Invoice Date";
+            worksheet.Cells[0, 6].Value = "Due Date";
+            workbook.Save("Input sheet.xlsx");
+        }
+
+        static void ReadInputRow()
+        {
+            ExcelFile workbook = ExcelFile.Load("Input sheet.xlsx");
+            ExcelWorksheet worksheet = workbook.Worksheets.First();
+            ExcelRow row = worksheet.Rows.First();
+            ExcelCell cell = row.Cells.First();
+
+            worksheet.Cells[0, 0].Value = "Title";
+
+
+        }
+
+        static void DisplaySheet() {
+
             // Load Excel workbook from file's path.
-            ExcelFile workbook = ExcelFile.Load("Username Password.xlsx");
+            ExcelFile workbook = ExcelFile.Load("Input sheet.xlsx");
 
             // Iterate through all worksheets in a workbook.
             foreach (ExcelWorksheet worksheet in workbook.Worksheets)
@@ -68,6 +85,21 @@ namespace Automate
                     Console.WriteLine();
                 }
             }
+
+            Console.WriteLine();
+        }
+
+        static void LogIn()
+        {
+            var d = new ChromeDriver();
+            d.Navigate().GoToUrl("https://buildertrend.net/summaryGrid.aspx");
+            //user name:lisa@sprucebox.com
+            //password:SB12345$
+            d.FindElement(By.Id("username")).SendKeys("lisa@sprucebox.com");
+            d.FindElement(By.Id("password")).SendKeys("SB12345$");
+            var button = d.FindElement(By.ClassName("ant-btn-primary"));
+            button.Click();
+            //d.Quit();
         }
     }
 }
