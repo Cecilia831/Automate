@@ -1,9 +1,7 @@
 # Automate
+## Description
+This is a project that inject financial data into cloud-based management software Buildertrend.
 ## Instructions
-Create and edit excel file:
-add NuGet package
-Tools ->  NuGet Package Manager -> Package Manager Settings
-add package sources
-Name: nuget.org
-Source: https://api.nuget.org/v3/index.json
+1st: Type the data into input.xlsx
+2nd: Click the Start Button and wait 
 
