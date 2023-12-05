@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 using GemBox.Spreadsheet;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
+//using Microsoft.VisualStudio.TestTool.UnitTesting;
 using System.Windows.Documents;
 using static System.Collections.Specialized.BitVector32;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 using static Automate.Program;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Threading;
 
 namespace Automate
 {
@@ -20,13 +23,13 @@ namespace Automate
         {
             SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
 
-            BuildSheet();
-            ReadInputRow();
+            //BuildSheet();
+            //ReadInputRow();
             //DisplaySheet();
-            LogIn();
-            FinancialBillsPOs();
-            var r = ReadInputRow();
-            Console.WriteLine(r);
+            var Login = LogIn();
+            var driver = FinancialBillsPOs(Login);
+            //var r = ReadInputRow();
+            //Console.WriteLine(r);
            
         }
 
@@ -102,28 +105,38 @@ namespace Automate
             Console.WriteLine();
         }
 
-        static void LogIn()
+        static ChromeDriver LogIn()
         {
             //Disabled all Chrome-level notifications
             ChromeOptions options = new ChromeOptions();
             options.AddArguments("--disable-extensions"); // to disable extension
             options.AddArguments("--disable-notifications"); // to disable notification
             options.AddArguments("--disable-application-cache"); // to disable cache
-            
+            options.AddArgument("--start-maximized"); // to maximize window
+
             var d = new ChromeDriver(options);
+
             d.Navigate().GoToUrl("https://buildertrend.net/summaryGrid.aspx");
-            //d.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             //user name:lisa@sprucebox.com
             //password:SB12345$
             d.FindElement(By.Id("username")).SendKeys("lisa@sprucebox.com");
             d.FindElement(By.Id("password")).SendKeys("SB12345$");
             var button = d.FindElement(By.ClassName("ant-btn-primary"));
             button.Click();
+
+            return d;
+
             //d.Quit();
         }
 
-        static void FinancialBillsPOs() {
-        
+        static IWebElement FinancialBillsPOs(ChromeDriver d)
+        {
+            Thread.Sleep(5000);
+            var b = d.FindElement(By.XPath("//html/body/div[2]/div/div/div[3]/form/div[3]/div[4]/div/div/div[1]/div/div[1]/div/div[6]/button"));
+            b.Click();
+            var BP = d.FindElement(By.XPath("/html/body/div[2]/div/div/div[3]/form/div[3]/div[4]/div/div/div[1]/div/div[1]/div/div[6]/div/div/div/ul/li[3]/span/div/div/a/div/div/div[2]/div"));
+            BP.Click();
+            return b;
         }
     }
 }
