@@ -24,12 +24,12 @@ namespace Automate
         {
             SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
 
-            BuildSheet();
-            ReadInputRow();
-            DisplaySheet();
-            //var Login = LogIn();
-            //FinancialBillsPOs(Login);
-            //SearchAndNewPO(Login);
+            //BuildSheet();
+            //ReadInputRow();
+            //DisplaySheet();
+            var Login = LogIn();
+            FinancialBillsPOs(Login);
+            SearchAndNewPO(Login);
             var r = ReadInputRow();
             foreach (KeyValuePair<string, string> ele in r)
                 Console.WriteLine("Key: {0}, Value: {1}", ele.Key, ele.Value);
@@ -67,7 +67,7 @@ namespace Automate
             IDictionary<string, string> row = new Dictionary<string, string>();
             while (i < Globals.N)
             {
-                row.Add(worksheet.Cells[0, i].ToString(), worksheet.Cells[1,i].ToString());
+                row.Add(worksheet.Cells[0, i].Value.ToString(), worksheet.Cells[1,i].Value.ToString());
                 i++;
             }
             return row;
@@ -117,28 +117,29 @@ namespace Automate
             options.AddArguments("--disable-notifications"); // to disable notification
             options.AddArguments("--disable-application-cache"); // to disable cache
             options.AddArgument("--start-maximized"); // to maximize window
+            options.DebuggerAddress = "127.0.0.1:1111";
 
             var d = new ChromeDriver(options);
 
-            d.Navigate().GoToUrl("https://buildertrend.net/summaryGrid.aspx");
+            //d.Navigate().GoToUrl("https://buildertrend.net/summaryGrid.aspx");
             //user name:lisa@sprucebox.com
             //password:SB12345$
-            d.FindElement(By.Id("username")).SendKeys("lisa@sprucebox.com");
-            d.FindElement(By.Id("password")).SendKeys("SB12345$");
-            var button = d.FindElement(By.ClassName("ant-btn-primary"));
-            button.Click();
+            //d.FindElement(By.Id("userName")).SendKeys("lisa@sprucebox.com");
+            //d.FindElement(By.Id("password")).SendKeys("SB12345$");
 
             return d;
-            //d.Quit();
         }
 
         static void FinancialBillsPOs(ChromeDriver d)
         {
             Thread.Sleep(5000);
+            //Find Financial
             var b = d.FindElement(By.XPath("//html/body/div[2]/div/div/div[3]/form/div[3]/div[4]/div/div/div[1]/div/div[1]/div/div[6]/button"));
             b.Click();
-            var BP = d.FindElement(By.XPath("/html/body/div[2]/div/div/div[3]/form/div[3]/div[4]/div/div/div[1]/div/div[1]/div/div[6]/div/div/div/ul/li[3]/span/div/div/a/div/div/div[2]/div"));
+            //Find Purchase Order
+            var BP = d.FindElement(By.XPath("//*[@id=\"reactMainNavigation\"]/div/div[1]/div/div[6]/div/div/div/ul/li[3]/span/div/div/a/div/div/div[2]/div"));
             BP.Click();
+
         }
 
         // Test only verson
