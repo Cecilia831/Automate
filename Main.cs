@@ -159,7 +159,14 @@ namespace Automate
             Thread.Sleep(5000);
             IWebElement e = d.FindElement(By.CssSelector("#title"));
             e.SendKeys(row["Title"]);
-        
+            Thread.Sleep(1000);
+            e.SendKeys(Keys.Tab);
+            Thread.Sleep(1000);
+            e.SendKeys(row["Assigned to"]);
+            Thread.Sleep(1000);
+            e.SendKeys(Keys.Enter);
+            //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div:nth-child(2) > div > div > div > div > div.rc-virtual-list > div.rc-virtual-list-holder > div > div > div.ant-select-item.ant-select-item-option.ant-select-item-option-grouped.ant-select-item-option-active > div > div > div"));
+            e.Click();
         }
     }
 }
