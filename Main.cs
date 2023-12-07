@@ -33,6 +33,7 @@ namespace Automate
             var r = ReadInputRow();
             foreach (KeyValuePair<string, string> ele in r)
                 Console.WriteLine("Key: {0}, Value: {1}", ele.Key, ele.Value);
+            InputPO(Login, r);
 
 
         }
@@ -136,6 +137,7 @@ namespace Automate
             //Find Financial
             var b = d.FindElement(By.XPath("//html/body/div[2]/div/div/div[3]/form/div[3]/div[4]/div/div/div[1]/div/div[1]/div/div[6]/button"));
             b.Click();
+            Thread.Sleep(5000);
             //Find Purchase Order
             var BP = d.FindElement(By.XPath("//*[@id=\"reactMainNavigation\"]/div/div[1]/div/div[6]/div/div/div/ul/li[3]/span/div/div/a/div/div/div[2]/div"));
             BP.Click();
@@ -151,6 +153,13 @@ namespace Automate
             //Find and click New -> PO
             d.FindElement(By.CssSelector("#rc-tabs-0-panel-1 > div > div.GridContainer-Header.StickyLayoutHeader.isTitle > header > button.ant-btn.ant-btn-success.ant-dropdown-trigger.BTDropdown.BTButton.AutoSizing")).Click();
             d.FindElement(By.CssSelector("#rc-tabs-0-panel-1 > div > div.GridContainer-Header.StickyLayoutHeader.isTitle > header > div > div > div > ul > li:nth-child(1) > span > a")).Click();
+        }
+
+        static void InputPO(WebDriver d, IDictionary <String, String> row) {
+            Thread.Sleep(5000);
+            IWebElement e = d.FindElement(By.CssSelector("#title"));
+            e.SendKeys(row["Title"]);
+        
         }
     }
 }
