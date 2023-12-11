@@ -6,9 +6,9 @@ Go to Command Prompt.
 
 Go to the  following directory and type command:
 
-'''
+''''
 C:\Program Files (x86)\Google\Chrome\Application>chrome.exe --remote-debugging-port=9999 --user-data-dir=C:\Users\lisa\OneDrive\Documents\Chrome_Test
-'''
+''''
 
 This command build a Chrome Driver directory displays besides Automate project.
 
