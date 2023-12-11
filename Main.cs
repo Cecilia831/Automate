@@ -28,8 +28,8 @@ namespace Automate
             //ReadInputRow();
             //DisplaySheet();
             var Login = LogIn();
-            FinancialBillsPOs(Login);
-            SearchAndNewPO(Login);
+            //FinancialBillsPOs(Login);
+            //SearchAndNewPO(Login);
             var r = ReadInputRow();
             foreach (KeyValuePair<string, string> ele in r)
                 Console.WriteLine("Key: {0}, Value: {1}", ele.Key, ele.Value);
@@ -156,17 +156,47 @@ namespace Automate
         }
 
         static void InputPO(WebDriver d, IDictionary <String, String> row) {
-            Thread.Sleep(5000);
+            Thread.Sleep(1000);
+            // Enter Title
             IWebElement e = d.FindElement(By.CssSelector("#title"));
             e.SendKeys(row["Title"]);
             Thread.Sleep(1000);
-            e.SendKeys(Keys.Tab);
-            Thread.Sleep(1000);
+            //Enter Assign to
+            e = d.FindElement(By.CssSelector("#performingUserId"));
             e.SendKeys(row["Assigned to"]);
             Thread.Sleep(1000);
             e.SendKeys(Keys.Enter);
-            //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div:nth-child(2) > div > div > div > div > div.rc-virtual-list > div.rc-virtual-list-holder > div > div > div.ant-select-item.ant-select-item-option.ant-select-item-option-grouped.ant-select-item-option-active > div > div > div"));
+            Thread.Sleep(1000);
+
+            //Click the Item button
+            e.SendKeys(Keys.PageDown);
+            e.SendKeys(Keys.PageDown);
+            e.SendKeys(Keys.PageDown);
+            Thread.Sleep(1000);
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div.ant-modal-body > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.removeBodyPadding > div > div:nth-child(5) > div.ant-card-body > div > div:nth-child(2) > form > div > div > div > div > div > div > div > div > div.ant-table-body > div > table > tbody > tr.ant-table-row.ant-table-row-level-0.actionRow.none > td.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.text-left > button"));
             e.Click();
+            //Send Title2
+            e = d.FindElement(By.CssSelector("#purchaseOrderLineItems\\[0\\]\\.itemTitle"));
+            Thread.Sleep(1000);
+            e.SendKeys(row["Title2"]);
+            Thread.Sleep(1000);
+            //Send Unit Cost
+            e = d.FindElement(By.CssSelector("#purchaseOrderLineItems\\[0\\]\\.unitCost"));
+            e.SendKeys(row["Unit Cost"]);
+            Thread.Sleep(2000);
+            //Send Cost Code
+            e = d.FindElement(By.CssSelector("#purchaseOrderLineItems\\[0\\]\\.costCodeId"));
+            e.SendKeys(row["Cost Code"]);
+            Thread.Sleep(2000);
+            e.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div:nth-child(3) > div > div > div > div > div.rc-virtual-list > div.rc-virtual-list-holder > div > div > div"));
+            e.Click();
+            //e.SendKeys(Keys.Enter);
+            Thread.Sleep(1000);
+
+            //Send description
+            e = d.FindElement(By.CssSelector("#purchaseOrderLineItems\\[0\\]\\.description"));
+            e.SendKeys(row["Title"]);
+
         }
     }
 }
