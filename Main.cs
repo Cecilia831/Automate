@@ -14,7 +14,7 @@ using static System.Collections.Specialized.BitVector32;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 using static Automate.Program;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-
+using OpenQA.Selenium.Internal;
 
 namespace Automate
 {
@@ -118,7 +118,7 @@ namespace Automate
             options.AddArguments("--disable-notifications"); // to disable notification
             options.AddArguments("--disable-application-cache"); // to disable cache
             options.AddArgument("--start-maximized"); // to maximize window
-            options.DebuggerAddress = "127.0.0.1:1111";
+            options.DebuggerAddress = "127.0.0.1:9999";
 
             var d = new ChromeDriver(options);
 
@@ -155,6 +155,15 @@ namespace Automate
             d.FindElement(By.CssSelector("#rc-tabs-0-panel-1 > div > div.GridContainer-Header.StickyLayoutHeader.isTitle > header > div > div > div > ul > li:nth-child(1) > span > a")).Click();
         }
 
+        static string AddDaysToToday(int day)
+        {
+            System.DateTime today = System.DateTime.Now;
+            System.TimeSpan duration = new System.TimeSpan(day, 0, 0, 0);
+            System.DateTime answer = today.Add(duration);
+            System.Console.WriteLine(answer);
+            string date = Convert.ToString(answer);
+            return date;
+        }
         static void InputPO(WebDriver d, IDictionary <String, String> row) {
             Thread.Sleep(1000);
             // Enter Title
@@ -163,39 +172,72 @@ namespace Automate
             Thread.Sleep(1000);
             //Enter Assign to
             e = d.FindElement(By.CssSelector("#performingUserId"));
-            e.SendKeys(row["Assigned to"]);
+            e.SendKeys(row["Assigned to"] + Keys.Enter);
             Thread.Sleep(1000);
-            e.SendKeys(Keys.Enter);
-            Thread.Sleep(1000);
-
             //Click the Item button
             e.SendKeys(Keys.PageDown);
             e.SendKeys(Keys.PageDown);
-            e.SendKeys(Keys.PageDown);
             Thread.Sleep(1000);
-            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div.ant-modal-body > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.removeBodyPadding > div > div:nth-child(5) > div.ant-card-body > div > div:nth-child(2) > form > div > div > div > div > div > div > div > div > div.ant-table-body > div > table > tbody > tr.ant-table-row.ant-table-row-level-0.actionRow.none > td.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.text-left > button"));
+            //I don't know why the directory is changing, but this selector work the best
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(27) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.removeBodyPadding > div > div:nth-child(5) > div.ant-card-body > div > div:nth-child(2) > form > div > div > div > div > div > div > div > div > div.ant-table-body > div > table > tbody > tr.ant-table-row.ant-table-row-level-0.actionRow.none > td.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.text-left > button"));
             e.Click();
+            Thread.Sleep(1000);
             //Send Title2
             e = d.FindElement(By.CssSelector("#purchaseOrderLineItems\\[0\\]\\.itemTitle"));
             Thread.Sleep(1000);
             e.SendKeys(row["Title2"]);
             Thread.Sleep(1000);
-            //Send Unit Cost
+            //Send Unit Cost, Clear Unit Const by send 6 Backspaces
             e = d.FindElement(By.CssSelector("#purchaseOrderLineItems\\[0\\]\\.unitCost"));
-            e.SendKeys(row["Unit Cost"]);
-            Thread.Sleep(2000);
+            e.SendKeys(Keys.Backspace); e.SendKeys(Keys.Backspace); e.SendKeys(Keys.Backspace); e.SendKeys(Keys.Backspace); e.SendKeys(Keys.Backspace); e.SendKeys(Keys.Backspace);
+            Thread.Sleep(1000);
+            e.SendKeys(row["Unit Cost"] + Keys.Enter);
+            Thread.Sleep(1000);
             //Send Cost Code
             e = d.FindElement(By.CssSelector("#purchaseOrderLineItems\\[0\\]\\.costCodeId"));
-            e.SendKeys(row["Cost Code"]);
-            Thread.Sleep(2000);
-            e.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div:nth-child(3) > div > div > div > div > div.rc-virtual-list > div.rc-virtual-list-holder > div > div > div"));
-            e.Click();
-            //e.SendKeys(Keys.Enter);
+            e.SendKeys(row["Cost Code"] + Keys.Enter);
             Thread.Sleep(1000);
 
-            //Send description
-            e = d.FindElement(By.CssSelector("#purchaseOrderLineItems\\[0\\]\\.description"));
-            e.SendKeys(row["Title"]);
+            //Click outsite item and save
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(27) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.ModalContentContainer > form > main > div > div.ant-col.ant-col-xs-24.ant-col-sm-6"));
+            e.Click();
+            Thread.Sleep(1000);
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(27) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter.Unstuck > button:nth-child(1)"));
+            e.Click();
+            Thread.Sleep(5000);
+            Console.WriteLine("Saved");
+
+            //Grab invoice number
+            e = d.FindElement(By.CssSelector("#purchaseOrderName"));
+            string num = e.GetAttribute("value");
+            Console.WriteLine("Invoive Number is:" + num);
+
+            //Create New Payment
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(27) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.purchaseOrder-billsLienWaiversList > div.ant-card-head > div > div.ant-card-extra > a > button"));
+            e.Click();
+            Thread.Sleep(2000);
+            //Click apply 100%
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(29) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.ModalContentContainer > div:nth-child(2) > main > div > div.ant-card-body > div.ant-row.ant-row-bottom.BTRow-xs > div:nth-child(2) > button"));
+            e.Click();
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(29) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter > button"));
+            e.Click();
+            Console.WriteLine("Save Apply");
+            //EnterDue Date
+            // Calculate what day of the week is 15 days from this instant.
+            //e.FindElement(By.CssSelector("# billTitle"));
+            Thread.Sleep(5000);
+            string date = AddDaysToToday(15);
+            e = d.FindElement(By.CssSelector("#dueDate"));
+            Console.WriteLine("Find Due date ");
+            e.SendKeys(date);
+            Console.WriteLine("Enter Due date ");
+            /*//Close Apply
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(29) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div.ant-modal-body > div > div.BTModalHeader > button"));
+            e.Click();
+            Console.WriteLine("Applied");
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(27) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalHeader > button"));
+            e.Click();
+            Console.WriteLine("Closed");*/
 
         }
     }
