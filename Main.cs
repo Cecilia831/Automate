@@ -219,25 +219,25 @@ namespace Automate
             //Click apply 100%
             e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(29) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.ModalContentContainer > div:nth-child(2) > main > div > div.ant-card-body > div.ant-row.ant-row-bottom.BTRow-xs > div:nth-child(2) > button"));
             e.Click();
+            //Click save for apply --then bump out bill window
             e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(29) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter > button"));
             e.Click();
             Console.WriteLine("Save Apply");
-            //EnterDue Date
-            // Calculate what day of the week is 15 days from this instant.
-            //e.FindElement(By.CssSelector("# billTitle"));
+            //Save apply -then everyting uneditable
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(29) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalHeader > button"));
+            e.Click();
             Thread.Sleep(5000);
-            string date = AddDaysToToday(15);
-            e = d.FindElement(By.CssSelector("#dueDate"));
-            Console.WriteLine("Find Due date ");
-            e.SendKeys(date);
-            Console.WriteLine("Enter Due date ");
-            /*//Close Apply
-            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(29) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div.ant-modal-body > div > div.BTModalHeader > button"));
+            //Close Bill
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(29) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalHeader > button"));
             e.Click();
-            Console.WriteLine("Applied");
-            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(27) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalHeader > button"));
+            //Save Purchase Order
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(27) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter.Unstuck > button:nth-child(1)"));
             e.Click();
-            Console.WriteLine("Closed");*/
+            //Close Purchase Ordr
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(27) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalHeader.Unstuck > button"));
+            e.Click();
+
+
 
         }
     }
