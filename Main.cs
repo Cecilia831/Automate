@@ -41,7 +41,7 @@ namespace Automate
 
         public static class Globals
         {
-            public const Int32 N = 7; 
+            public const Int32 N = 8; 
         }
        
         static void BuildSheet() {
@@ -50,13 +50,14 @@ namespace Automate
             ExcelRow row = worksheet.Rows.First();
             ExcelCell cell = row.Cells.First();
 
-            worksheet.Cells[0, 0].Value = "Title";
-            worksheet.Cells[0 ,1].Value = "Assigned to";
-            worksheet.Cells[0, 2].Value = "Title2";
-            worksheet.Cells[0, 3].Value = "Cost Code";
-            worksheet.Cells[0, 4].Value = "Unit Cost";
-            worksheet.Cells[0, 5].Value = "Invoice Date";
-            worksheet.Cells[0, 6].Value = "Due Date";
+            worksheet.Cells[0, 0].Value = "Project No";
+            worksheet.Cells[0, 1].Value = "Title";
+            worksheet.Cells[0 ,2].Value = "Assigned to";
+            worksheet.Cells[0, 3].Value = "Title2";
+            worksheet.Cells[0, 4].Value = "Cost Code";
+            worksheet.Cells[0, 5].Value = "Unit Cost";
+            worksheet.Cells[0, 6].Value = "Invoice Date";
+            worksheet.Cells[0, 7].Value = "Due Date";
             workbook.Save("Input sheet.xlsx");
         }
 
@@ -139,10 +140,11 @@ namespace Automate
             //Find Financial
             var b = d.FindElement(By.XPath("//html/body/div[2]/div/div/div[3]/form/div[3]/div[4]/div/div/div[1]/div/div[1]/div/div[6]/button"));
             b.Click();
-            Thread.Sleep(5000);
+            Thread.Sleep(1000);
             //Find Purchase Order
             var BP = d.FindElement(By.XPath("//*[@id=\"reactMainNavigation\"]/div/div[1]/div/div[6]/div/div/div/ul/li[3]/span/div/div/a/div/div/div[2]/div"));
             BP.Click();
+            Thread.Sleep(5000);
         }
 
         // Test only verson
@@ -151,7 +153,7 @@ namespace Automate
             d.FindElement(By.Id("JobSearch")).SendKeys("23000");
             Thread.Sleep(2000);
             d.FindElement(By.ClassName("ItemRowJobName")).Click();// Click to Job Order
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
             //Find and click New -> PO
             d.FindElement(By.CssSelector("#rc-tabs-0-panel-1 > div > div.GridContainer-Header.StickyLayoutHeader.isTitle > header > button.ant-btn.ant-btn-success.ant-dropdown-trigger.BTDropdown.BTButton.AutoSizing")).Click();
             d.FindElement(By.CssSelector("#rc-tabs-0-panel-1 > div > div.GridContainer-Header.StickyLayoutHeader.isTitle > header > div > div > div > ul > li:nth-child(1) > span > a")).Click();
@@ -167,7 +169,7 @@ namespace Automate
             return date;
         }
 
-        static void ClosechatButtonClick(WebDriver d)
+        static void CloseChatButtonClick(WebDriver d)
         {
             IWebElement e = d.FindElement(By.Id("btnCloseIntercom"));
             e.Click();
@@ -198,11 +200,10 @@ namespace Automate
             //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(20) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content >                div > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.removeBodyPadding > div > div:nth-child(5) > div.ant-card-body > div > div:nth-child(2) > form > div > div > div > div > div > div > div > div > div.ant-table-body > div > table > tbody > tr.ant-table-row.ant-table-row-level-0.actionRow.none > td.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.text-left > button"));
             //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(19) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div.ant-modal-body > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.removeBodyPadding > div > div:nth-child(5) > div.ant-card-body > div > div:nth-child(2) > form > div > div > div > div > div > div > div > div > div.ant-table-body > div > table > tbody > tr.ant-table-row.ant-table-row-level-0.actionRow.none > td.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.text-left > button"));
             e.Click();
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             
             //Send Title2
             e = d.FindElement(By.CssSelector("#purchaseOrderLineItems\\[0\\]\\.itemTitle"));
-            Thread.Sleep(1000);
             e.SendKeys(row["Title2"]);
             Thread.Sleep(1000);
             
@@ -216,7 +217,7 @@ namespace Automate
             //Send Cost Code
             e = d.FindElement(By.CssSelector("#purchaseOrderLineItems\\[0\\]\\.costCodeId"));
             e.SendKeys(row["Cost Code"] + OpenQA.Selenium.Keys.Enter);
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
 
             //Click outsite item and save
             e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.ModalContentContainer > form > main > div > div.ant-col.ant-col-xs-24.ant-col-sm-6"));
@@ -225,17 +226,16 @@ namespace Automate
             e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div.ant-modal-body > div > div.BTModalFooter.Unstuck > button:nth-child(1)"));
             e.Click();
             Thread.Sleep(5000);
-            Console.WriteLine("Saved");
 
             //Grab invoice number
             e = d.FindElement(By.CssSelector("#purchaseOrderName"));
             string num = e.GetAttribute("value");
             Console.WriteLine("Invoive Number is:" + num);
 
-            //Create New Payment
+            //Create New Payment Bill
             e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.purchaseOrder-billsLienWaiversList > div.ant-card-head > div > div.ant-card-extra > a > button"));
             e.Click();
-            Thread.Sleep(2000);
+            Thread.Sleep(3000);
             
             //Click apply 100%
             e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(29) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.ModalContentContainer > div:nth-child(2) > main > div > div.ant-card-body > div.ant-row.ant-row-bottom.BTRow-xs > div:nth-child(2) > button"));
@@ -245,7 +245,6 @@ namespace Automate
             //Click save for apply --then bump out bill window
             e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(29) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter > button"));
             e.Click();
-            Console.WriteLine("Save Apply");
             Thread.Sleep(10000);
             
             //Save apply -then everyting uneditable
@@ -256,7 +255,7 @@ namespace Automate
             //Close Bill
             e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(29) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalHeader > button"));
             e.Click();
-            Thread.Sleep(5000);
+            Thread.Sleep(1000);
             
             //Save Purchase Order
             e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter.Unstuck > button:nth-child(1)"));
@@ -266,6 +265,8 @@ namespace Automate
             //Close Purchase Order
             e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalHeader.Unstuck > button"));
             e.Click();
+            Thread.Sleep(1000);
+            Console.WriteLine("{0}{1} is saved",row["Project No"],num);
         }
 
 
