@@ -29,8 +29,8 @@ namespace Automate
             //ReadInputRow();
             //DisplaySheet();
             var Login = LogIn();
-            //FinancialBillsPOs(Login);
-            //SearchAndNewPO(Login);
+            FinancialBillsPOs(Login);
+            SearchAndNewPO(Login);
             var r = ReadInputRow();
             foreach (KeyValuePair<string, string> ele in r)
                 Console.WriteLine("Key: {0}, Value: {1}", ele.Key, ele.Value);
@@ -132,6 +132,7 @@ namespace Automate
             return d;
         }
 
+        //From Summary Page, Goto Financial->Purchase Order
         static void FinancialBillsPOs(ChromeDriver d)
         {
             Thread.Sleep(5000);
@@ -142,7 +143,6 @@ namespace Automate
             //Find Purchase Order
             var BP = d.FindElement(By.XPath("//*[@id=\"reactMainNavigation\"]/div/div[1]/div/div[6]/div/div/div/ul/li[3]/span/div/div/a/div/div/div[2]/div"));
             BP.Click();
-
         }
 
         // Test only verson
@@ -152,9 +152,6 @@ namespace Automate
             Thread.Sleep(2000);
             d.FindElement(By.ClassName("ItemRowJobName")).Click();// Click to Job Order
             Thread.Sleep(2000);
-            //# reactJobPicker > div > div.ant-list.ant-list-split.BTListVirtual.JobList > div > div > div:nth-child(1) > div > div > li:nth-child(2) > div > div
-            //*[@id="reactJobPicker"]/div/div[2]/div/div/div[1]/div/div/li[2]/div/div
-            /// html / body / div[2] / div / div / div[3] / form / div[3] / div[4] / div / div / div[3] / div / div[1] / div / div / div / div / div / div / div / div[1] / div / div[2] / div / div / div[1] / div / div / li[2] / div / div
             //Find and click New -> PO
             d.FindElement(By.CssSelector("#rc-tabs-0-panel-1 > div > div.GridContainer-Header.StickyLayoutHeader.isTitle > header > button.ant-btn.ant-btn-success.ant-dropdown-trigger.BTDropdown.BTButton.AutoSizing")).Click();
             d.FindElement(By.CssSelector("#rc-tabs-0-panel-1 > div > div.GridContainer-Header.StickyLayoutHeader.isTitle > header > div > div > div > ul > li:nth-child(1) > span > a")).Click();
