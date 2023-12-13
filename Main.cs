@@ -16,6 +16,7 @@ using static Automate.Program;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using OpenQA.Selenium.Internal;
 using System.Windows.Forms;
+using System.Windows.Media.Media3D;
 
 namespace Automate
 {
@@ -29,13 +30,13 @@ namespace Automate
             //ReadInputRow();
             //DisplaySheet();
             var Login = LogIn();
-            FinancialBillsPOs(Login);
-            SearchAndNewPO(Login);
             var r = ReadInputRow();
+            FinancialBillsPOs(Login);
+            SearchAndNewPO(Login,r);
+            
             foreach (KeyValuePair<string, string> ele in r)
                 Console.WriteLine("Key: {0}, Value: {1}", ele.Key, ele.Value);
             InputPO(Login, r);
-
 
         }
 
@@ -148,9 +149,9 @@ namespace Automate
         }
 
         // Test only verson
-        static void SearchAndNewPO(ChromeDriver d) {
+        static void SearchAndNewPO(ChromeDriver d, IDictionary<String, String> row) {
             Thread.Sleep(2000);
-            d.FindElement(By.Id("JobSearch")).SendKeys("23000");
+            d.FindElement(By.Id("JobSearch")).SendKeys(row["Project No"]);
             Thread.Sleep(2000);
             d.FindElement(By.ClassName("ItemRowJobName")).Click();// Click to Job Order
             Thread.Sleep(5000);
@@ -176,7 +177,7 @@ namespace Automate
         }
 
         static void InputPO(WebDriver d, IDictionary <String, String> row) {
-            Thread.Sleep(1000);
+            Thread.Sleep(5000);
             // Enter Title
             IWebElement e = d.FindElement(By.CssSelector("#title"));
             e.SendKeys(row["Title"]);
