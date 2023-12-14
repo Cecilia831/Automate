@@ -17,6 +17,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using OpenQA.Selenium.Internal;
 using System.Windows.Forms;
 using System.Windows.Media.Media3D;
+using System.Collections;
 
 namespace Automate
 {
@@ -27,16 +28,23 @@ namespace Automate
             SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
 
             //BuildSheet();
-            //ReadInputRow();
             //DisplaySheet();
             var Login = LogIn();
-            var r = ReadInputRow();
             FinancialBillsPOs(Login);
-            SearchAndNewPO(Login,r);
-            
-            foreach (KeyValuePair<string, string> ele in r)
-                Console.WriteLine("Key: {0}, Value: {1}", ele.Key, ele.Value);
-            InputPO(Login, r);
+            int ProNum = CheckProjectsNum();
+            if (ProNum == 1)
+            {
+                Console.WriteLine("Input sheet is empty. All Projects have entered!");
+            }
+            else
+            {
+                var r = ReadInputRow();
+                SearchAndNewPO(Login,r);
+                foreach (KeyValuePair<string, string> ele in r)
+                    Console.WriteLine("Key: {0}, Value: {1}", ele.Key, ele.Value);
+                InputPO(Login, r);
+                DeleteFromInput();
+            }
 
         }
 
@@ -66,7 +74,6 @@ namespace Automate
         {
             ExcelFile workbook = ExcelFile.Load("Input sheet.xlsx");
             ExcelWorksheet worksheet = workbook.Worksheets.First();
-
             int i = 0;
             IDictionary<string, string> row = new Dictionary<string, string>();
             while (i < Globals.N)
@@ -141,11 +148,18 @@ namespace Automate
             //Find Financial
             var b = d.FindElement(By.XPath("//html/body/div[2]/div/div/div[3]/form/div[3]/div[4]/div/div/div[1]/div/div[1]/div/div[6]/button"));
             b.Click();
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             //Find Purchase Order
             var BP = d.FindElement(By.XPath("//*[@id=\"reactMainNavigation\"]/div/div[1]/div/div[6]/div/div/div/ul/li[3]/span/div/div/a/div/div/div[2]/div"));
             BP.Click();
             Thread.Sleep(5000);
+        }
+
+        static int CheckProjectsNum() {
+            ExcelFile workbook = ExcelFile.Load("Input sheet.xlsx");
+            ExcelWorksheet worksheet = workbook.Worksheets.First();
+            int rows = worksheet.Rows.Count();
+            return rows;
         }
 
         // Test only verson
@@ -267,9 +281,19 @@ namespace Automate
             e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalHeader.Unstuck > button"));
             e.Click();
             Thread.Sleep(1000);
-            Console.WriteLine("{0}{1} is saved",row["Project No"],num);
+            String projectNo = Convert.ToString(row["Project No"]) + Convert.ToString(num);
+            row["Project No"] = row["Project No"] + "-" + Convert.ToString(num);
+            Console.WriteLine("{0} is saved", projectNo);
+
         }
 
-
+        static void DeleteFromInput() {
+            ExcelFile workbook = ExcelFile.Load("Input sheet.xlsx");
+            ExcelWorksheet worksheet = workbook.Worksheets.First();
+            ExcelRowCollection rows = worksheet.Rows;
+            // Delete the 2nd row from the worksheet.
+            rows.Remove(1);
+            workbook.Save("Input sheet.xlsx");
+        }
     }
 }
