@@ -32,16 +32,17 @@ namespace Automate
             var Login = LogIn();
             var r = ReadInputRow();
             int ProNum = CheckProjectsNum();
+            Console.WriteLine("{0} Projects Wait in Line", ProNum - 1);
             while (ProNum > 1)
             {
                 FinancialBillsPOs(Login);
                 SearchAndNewPO(Login, r);
-                Console.WriteLine("******************************");
+                Console.WriteLine("**********************************");
                 foreach (KeyValuePair<string, string> ele in r)
                     Console.WriteLine("{0}: {1}", ele.Key, ele.Value);
                 InputPO(Login, r);
-                DeleteFromInput();
-                ClearSearchBoxGoSummary(Login);
+                DeleteFromInputSheet();
+                ClearSearchBoxGoBackSummary(Login);
                 r = ReadInputRow();
                 ProNum--;
             }
@@ -91,7 +92,6 @@ namespace Automate
         }
 
         static void DisplaySheet() {
-
             // Load Excel workbook from file's path.
             ExcelFile workbook = ExcelFile.Load("Input sheet.xlsx");
 
@@ -181,7 +181,6 @@ namespace Automate
             }
             catch
             {
-                Console.WriteLine("There is no chatbox!");
             }
             finally
             {
@@ -218,7 +217,7 @@ namespace Automate
         }
 
         static void InputPO(WebDriver d, IDictionary <String, String> row) {
-            Thread.Sleep(5000);
+            Thread.Sleep(7000);
             // Enter Title
             IWebElement e = d.FindElement(By.CssSelector("#title"));
             e.SendKeys(row["Title"]);
@@ -234,7 +233,7 @@ namespace Automate
             e.SendKeys(OpenQA.Selenium.Keys.PageDown);
             Thread.Sleep(1000);
             
-            //I don't know why the directory is changing, but this selector work the best (19-20-24-26-27) If start from beginning 24 works
+            //I don't know why the directory is changing, but this selector work the best (19-20-24-26-27) If start from beginning 24 works, next will be 29 (+5)
             //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(27) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content >                div > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.removeBodyPadding > div > div:nth-child(5) > div.ant-card-body > div > div:nth-child(2) > form > div > div > div > div > div > div > div > div > div.ant-table-body > div > table > tbody > tr.ant-table-row.ant-table-row-level-0.actionRow.none > td.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.text-left > button"));
             //                                  #ctl00_ctl00_bodyTagControl > div:nth-child(26) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div.ant-modal-body > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.removeBodyPadding > div > div:nth-child(5) > div.ant-card-body > div > div:nth-child(2) > form > div > div > div > div > div > div > div > div > div.ant-table-body > div > table > tbody > tr.ant-table-row.ant-table-row-level-0.actionRow.none > td.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.text-left > button"));
             //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div.ant-modal-body > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.removeBodyPadding > div > div:nth-child(5) > div.ant-card-body > div > div:nth-child(2) > form > div > div > div > div > div > div > div > div > div.ant-table-body > div > table > tbody > tr.ant-table-row.ant-table-row-level-0.actionRow.none > td.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.text-left > button"));
@@ -285,7 +284,6 @@ namespace Automate
             //Click apply 100%
             //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(29) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.ModalContentContainer > div:nth-child(2) > main > div > div.ant-card-body > div.ant-row.ant-row-bottom.BTRow-xs > div:nth-child(2) > button"));
             e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(25) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.ModalContentContainer > div:nth-child(2) > main > div > div.ant-card-body > div.ant-row.ant-row-bottom.BTRow-xs > div:nth-child(2) > button"));
-            
             e.Click();
             Thread.Sleep(1000);
             
@@ -314,12 +312,10 @@ namespace Automate
             e.Click();
             Thread.Sleep(1000);
             String projectNo = Convert.ToString(row["Project No"]) + Convert.ToString(num);
-            row["Project No"] = row["Project No"] + "-" + Convert.ToString(num);
             Console.WriteLine("{0} is saved.", projectNo);
-
         }
 
-        static void DeleteFromInput() {
+        static void DeleteFromInputSheet() {
             ExcelFile workbook = ExcelFile.Load("Input sheet.xlsx");
             ExcelWorksheet worksheet = workbook.Worksheets.First();
             ExcelRowCollection rows = worksheet.Rows;
@@ -328,7 +324,7 @@ namespace Automate
             workbook.Save("Input sheet.xlsx");
         }
 
-        static void ClearSearchBoxGoSummary(ChromeDriver d)
+        static void ClearSearchBoxGoBackSummary(ChromeDriver d)
         {
             //Clear the Search Box
             Thread.Sleep(2000);
