@@ -58,7 +58,6 @@ namespace Automate
             ExcelFile workbook = ExcelFile.Load("Input sheet.xlsx");
             ExcelWorksheet worksheet = workbook.Worksheets.First();
             ExcelRow row = worksheet.Rows.First();
-            ExcelCell cell = row.Cells.First();
 
             worksheet.Cells[0, 0].Value = "Project No";
             worksheet.Cells[0, 1].Value = "Title";
