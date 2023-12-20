@@ -30,21 +30,22 @@ namespace Automate
             //BuildSheet();
             //DisplaySheet();
             var Login = LogIn();
-            FinancialBillsPOs(Login);
             var r = ReadInputRow();
             int ProNum = CheckProjectsNum();
-
             while (ProNum > 1)
             {
-                SearchAndNewPO(Login,r);
+                FinancialBillsPOs(Login);
+                SearchAndNewPO(Login, r);
+                Console.WriteLine("******************************");
                 foreach (KeyValuePair<string, string> ele in r)
-                    Console.WriteLine("Key: {0}, Value: {1}", ele.Key, ele.Value);
+                    Console.WriteLine("{0}: {1}", ele.Key, ele.Value);
                 InputPO(Login, r);
                 DeleteFromInput();
+                ClearSearchBoxGoSummary(Login);
                 r = ReadInputRow();
                 ProNum--;
             }
-            Console.WriteLine("Input sheet is empty. All Projects have entered!");
+            Console.WriteLine("**Input sheet is empty. All Projects have entered!**");
         }
 
         public static class Globals
@@ -75,12 +76,18 @@ namespace Automate
             ExcelWorksheet worksheet = workbook.Worksheets.First();
             int i = 0;
             IDictionary<string, string> row = new Dictionary<string, string>();
-            while (i < Globals.N)
+            try
             {
-                row.Add(worksheet.Cells[0, i].Value.ToString(), worksheet.Cells[1,i].Value.ToString());
-                i++;
+                while (i < Globals.N)
+                {
+                    row.Add(worksheet.Cells[0, i].Value.ToString(), worksheet.Cells[1, i].Value.ToString());
+                    i++;
+                }
+                return row;
             }
-            return row;
+            catch {
+                return null;
+            }
         }
 
         static void DisplaySheet() {
@@ -152,6 +159,34 @@ namespace Automate
             var BP = d.FindElement(By.XPath("//*[@id=\"reactMainNavigation\"]/div/div[1]/div/div[6]/div/div/div/ul/li[3]/span/div/div/a/div/div/div[2]/div"));
             BP.Click();
             Thread.Sleep(5000);
+
+            // Close the chatbox if possible
+            try
+            {
+                //IFrame - Close ChatBox
+                //Switch to the frame
+                d.SwitchTo().Frame("intercom-launcher-frame");
+                Thread.Sleep(3000);
+                //Now click the button
+                var e = d.FindElement(By.CssSelector("#intercom-container > div > div > div.intercom-1epm6qj.e11rlguj3 > svg"));
+                e.Click();
+                Thread.Sleep(1000);
+                // Return to the top level
+                d.SwitchTo().DefaultContent();
+                Thread.Sleep(3000);
+                //Click Close Button
+                e = d.FindElement(By.CssSelector("#btnCloseIntercom"));
+                e.Click();
+                Thread.Sleep(1000);
+            }
+            catch
+            {
+                Console.WriteLine("There is no chatbox!");
+            }
+            finally
+            {
+                d.SwitchTo().DefaultContent();
+            }
         }
 
         static int CheckProjectsNum() {
@@ -161,7 +196,6 @@ namespace Automate
             return rows;
         }
 
-        // Test only verson
         static void SearchAndNewPO(ChromeDriver d, IDictionary<String, String> row) {
             Thread.Sleep(2000);
             d.FindElement(By.Id("JobSearch")).SendKeys(row["Project No"]);
@@ -183,42 +217,12 @@ namespace Automate
             return date;
         }
 
-        static void CloseChatButtonClick(WebDriver d)
-        {
-            IWebElement e = d.FindElement(By.Id("btnCloseIntercom"));
-            e.Click();
-        }
-
         static void InputPO(WebDriver d, IDictionary <String, String> row) {
             Thread.Sleep(5000);
             // Enter Title
             IWebElement e = d.FindElement(By.CssSelector("#title"));
             e.SendKeys(row["Title"]);
             Thread.Sleep(1000);
-
-            try
-            {
-                //IFrame - Close ChatBox
-                //Switch to the frame
-                d.SwitchTo().Frame("intercom-launcher-frame");
-                Thread.Sleep(3000);
-                //Now click the button
-                e = d.FindElement(By.CssSelector("#intercom-container > div > div > div.intercom-1epm6qj.e11rlguj3 > svg"));
-                e.Click();
-                // Return to the top level
-                d.SwitchTo().DefaultContent();
-                Thread.Sleep(3000);
-                //Click Close Button
-                e = d.FindElement(By.CssSelector("#btnCloseIntercom"));
-                e.Click();
-                Thread.Sleep(1000);
-            }
-            catch {
-                Console.WriteLine("Luckly, there is not a chatbox!");
-            }
-            finally{
-                d.SwitchTo().DefaultContent();
-            }
 
             //Enter Assign to
             e = d.FindElement(By.CssSelector("#performingUserId"));
@@ -269,6 +273,7 @@ namespace Automate
 
             //Grab invoice number
             e = d.FindElement(By.CssSelector("#purchaseOrderName"));
+            Thread.Sleep(1000);
             string num = e.GetAttribute("value");
             Console.WriteLine("Invoive Number is:" + num);
 
@@ -310,7 +315,7 @@ namespace Automate
             Thread.Sleep(1000);
             String projectNo = Convert.ToString(row["Project No"]) + Convert.ToString(num);
             row["Project No"] = row["Project No"] + "-" + Convert.ToString(num);
-            Console.WriteLine("{0} is saved", projectNo);
+            Console.WriteLine("{0} is saved.", projectNo);
 
         }
 
@@ -321,6 +326,24 @@ namespace Automate
             // Delete the 2nd row from the worksheet.
             rows.Remove(1);
             workbook.Save("Input sheet.xlsx");
+        }
+
+        static void ClearSearchBoxGoSummary(ChromeDriver d)
+        {
+            //Clear the Search Box
+            Thread.Sleep(2000);
+            d.FindElement(By.CssSelector("#reactJobPicker > div > div.JobPickerHeader > div.SearchContainer > span > span > button")).Click();//Clear by click x
+            Thread.Sleep(5000);
+            //Clear Search List
+            d.FindElement(By.CssSelector("#reactJobPicker > div > div.ant-list.ant-list-split.BTListVirtual.JobList > div > div > div:nth-child(1) > div > div > li.ant-list-item.JobListItem.AllJobs > div > div"));
+            Thread.Sleep(2000);
+            //Go back to Summary
+            var j = d.FindElement(By.CssSelector("#reactMainNavigation > div > div.MainNavDropdownsRow.darken > div > div:nth-child(2) > button"));
+            j.Click();
+            Thread.Sleep(1000);
+            var s = d.FindElement(By.CssSelector("#reactMainNavigation > div > div.MainNavDropdownsRow.darken > div > div:nth-child(2) > div > div > div > ul > li:nth-child(1) > span > div > div > a > div"));
+            s.Click();
+            Thread.Sleep(2000);
         }
     }
 }
