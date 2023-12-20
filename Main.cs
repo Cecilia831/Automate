@@ -30,25 +30,21 @@ namespace Automate
             //BuildSheet();
             //DisplaySheet();
             var Login = LogIn();
+            FinancialBillsPOs(Login);
             var r = ReadInputRow();
-            InputPO(Login, r);
+            int ProNum = CheckProjectsNum();
 
-            //FinancialBillsPOs(Login);
-            //int ProNum = CheckProjectsNum();
-            /*if (ProNum == 1)
+            while (ProNum > 1)
             {
-                Console.WriteLine("Input sheet is empty. All Projects have entered!");
-            }
-            else
-            {
-                var r = ReadInputRow();
                 SearchAndNewPO(Login,r);
                 foreach (KeyValuePair<string, string> ele in r)
                     Console.WriteLine("Key: {0}, Value: {1}", ele.Key, ele.Value);
                 InputPO(Login, r);
                 DeleteFromInput();
-            }*/
-
+                r = ReadInputRow();
+                ProNum--;
+            }
+            Console.WriteLine("Input sheet is empty. All Projects have entered!");
         }
 
         public static class Globals
@@ -202,7 +198,7 @@ namespace Automate
 
             try
             {
-                //IFrame
+                //IFrame - Close ChatBox
                 //Switch to the frame
                 d.SwitchTo().Frame("intercom-launcher-frame");
                 Thread.Sleep(3000);
