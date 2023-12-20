@@ -32,7 +32,7 @@ namespace Automate
             var Login = LogIn();
             var r = ReadInputRow();
             int ProNum = CheckProjectsNum();
-            Console.WriteLine("{0} Projects Wait in Line", ProNum - 1);
+            Console.WriteLine("{0} projects wait in line", ProNum - 1);
             while (ProNum > 1)
             {
                 FinancialBillsPOs(Login);
@@ -312,7 +312,7 @@ namespace Automate
             e.Click();
             Thread.Sleep(1000);
             String projectNo = Convert.ToString(row["Project No"]) + Convert.ToString(num);
-            Console.WriteLine("{0} is saved.", projectNo);
+            Console.WriteLine("{0} is saved!", projectNo);
         }
 
         static void DeleteFromInputSheet() {
