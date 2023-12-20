@@ -12,10 +12,11 @@ C:\Program Files (x86)\Google\Chrome\Application>chrome.exe --remote-debugging-p
 
 This command build a Chrome Driver directory displays besides Automate project.
 
-Log in in the new Chrome and go to Purchase Order page.
+Log in in the new Chrome and go to Summary page.
 
 ## Instructions
-1st: Type the data into input.xlsx.
+1st: Type the data into input.xlsx. Make sure other cells except those projects will be automated are empty.
 
-2nd: Click the Start Button and wait .
+
+2nd: Click the Start Icon and wait.
 
