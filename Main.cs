@@ -138,10 +138,7 @@ namespace Automate
             var d = new ChromeDriver(options);
 
             //d.Navigate().GoToUrl("https://buildertrend.net/summaryGrid.aspx");
-            //user name:lisa@sprucebox.com
-            //password:SB12345$
-            //d.FindElement(By.Id("userName")).SendKeys("lisa@sprucebox.com");
-            //d.FindElement(By.Id("password")).SendKeys("SB12345$");
+
 
             return d;
         }
