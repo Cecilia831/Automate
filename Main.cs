@@ -176,7 +176,7 @@ namespace Automate
                 //Click Close Button
                 e = d.FindElement(By.CssSelector("#btnCloseIntercom"));
                 e.Click();
-                Thread.Sleep(1000);
+                Thread.Sleep(3000);
             }
             catch
             {
@@ -307,7 +307,7 @@ namespace Automate
             e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(20) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalHeader.Unstuck > button"));
             e.Click();
             Thread.Sleep(1000);
-            String projectNo = Convert.ToString(row["Project No"]) + Convert.ToString(num);
+            String projectNo = Convert.ToString(row["Project No"]) + "-" + Convert.ToString(num);
             Console.WriteLine("{0} is saved!", projectNo);
         }
 
