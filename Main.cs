@@ -222,21 +222,26 @@ namespace Automate
             //Enter Assign to
             e = d.FindElement(By.CssSelector("#performingUserId"));
             e.SendKeys(row["Assigned to"] + OpenQA.Selenium.Keys.Enter);
-            Thread.Sleep(1000);
+            /*e.SendKeys(row["Assigned to"]);
+            Thread.Sleep(3000);
+            e.SendKeys(OpenQA.Selenium.Keys.Enter);*/
+            Thread.Sleep(3000);
             
+
             //Click the Item button
             e.SendKeys(OpenQA.Selenium.Keys.PageDown);
             e.SendKeys(OpenQA.Selenium.Keys.PageDown);
             Thread.Sleep(1000);
-            
+            //#ctl00_ctl00_bodyTagControl > div:nth-child(19) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div.ant-modal-body > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.removeBodyPadding > div > div:nth-child(5) > div.ant-card-body > div > div:nth-child(2) > form > div > div > div > div > div > div > div > div > div.ant-table-body > div > table > tbody > tr.ant-table-row.ant-table-row-level-0.actionRow.none > td.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.text-left > button
             //I don't know why the directory is changing, but this selector work the best (19-20-24-26-27) If start from beginning 24 works, next will be 29 (+5)
             //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(27) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content >                div > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.removeBodyPadding > div > div:nth-child(5) > div.ant-card-body > div > div:nth-child(2) > form > div > div > div > div > div > div > div > div > div.ant-table-body > div > table > tbody > tr.ant-table-row.ant-table-row-level-0.actionRow.none > td.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.text-left > button"));
             //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div.ant-modal-body > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.removeBodyPadding > div > div:nth-child(5) > div.ant-card-body > div > div:nth-child(2) > form > div > div > div > div > div > div > div > div > div.ant-table-body > div > table > tbody > tr.ant-table-row.ant-table-row-level-0.actionRow.none > td.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.text-left > button"));
-              e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(20) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div.ant-modal-body > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.removeBodyPadding > div > div:nth-child(5) > div.ant-card-body > div > div:nth-child(2) > form > div > div > div > div > div > div > div > div > div.ant-table-body > div > table > tbody > tr.ant-table-row.ant-table-row-level-0.actionRow.none > td.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.text-left > button"));
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(19) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div.ant-modal-body > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.removeBodyPadding > div > div:nth-child(5) > div.ant-card-body > div > div:nth-child(2) > form > div > div > div > div > div > div > div > div > div.ant-table-body > div > table > tbody > tr.ant-table-row.ant-table-row-level-0.actionRow.none > td.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.text-left > button"));
             //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(20) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content >                div > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.removeBodyPadding > div > div:nth-child(5) > div.ant-card-body > div > div:nth-child(2) > form > div > div > div > div > div > div > div > div > div.ant-table-body > div > table > tbody > tr.ant-table-row.ant-table-row-level-0.actionRow.none > td.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.text-left > button"));
                                               //#ctl00_ctl00_bodyTagControl > div:nth-child(20) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content >                div > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.removeBodyPadding > div > div:nth-child(5) > div.ant-card-body > div > div:nth-child(2) > form > div > div > div > div > div > div > div > div > div.ant-table-body > div > table > tbody > tr.ant-table-row.ant-table-row-level-0.actionRow.none > td.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.text-left > button
+            Thread.Sleep(1000);
             e.Click();
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
             
             //Send Title2
             e = d.FindElement(By.CssSelector("#purchaseOrderLineItems\\[0\\]\\.itemTitle"));
@@ -256,10 +261,10 @@ namespace Automate
             Thread.Sleep(2000);
 
             //Click outsite item and save
-            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(20) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.ModalContentContainer > form > main > div > div.ant-col.ant-col-xs-24.ant-col-sm-6"));
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(19) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.ModalContentContainer > form > main > div > div.ant-col.ant-col-xs-24.ant-col-sm-6"));
             e.Click();
             Thread.Sleep(1000);
-            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(20) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div.ant-modal-body > div > div.BTModalFooter.Unstuck > button:nth-child(1)"));
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(19) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div.ant-modal-body > div > div.BTModalFooter.Unstuck > button:nth-child(1)"));
             e.Click();
             Thread.Sleep(5000);
 
@@ -270,38 +275,38 @@ namespace Automate
             Console.WriteLine("Invoive Number is:" + num);
 
             //Create New Payment Bill
-            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(20) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.purchaseOrder-billsLienWaiversList > div.ant-card-head > div > div.ant-card-extra > a > button"));
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(19) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.purchaseOrder-billsLienWaiversList > div.ant-card-head > div > div.ant-card-extra > a > button"));
             e.Click();
             Thread.Sleep(3000);
             
             //Click apply 100%
             //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(29) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.ModalContentContainer > div:nth-child(2) > main > div > div.ant-card-body > div.ant-row.ant-row-bottom.BTRow-xs > div:nth-child(2) > button"));
-            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(25) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.ModalContentContainer > div:nth-child(2) > main > div > div.ant-card-body > div.ant-row.ant-row-bottom.BTRow-xs > div:nth-child(2) > button"));
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.ModalContentContainer > div:nth-child(2) > main > div > div.ant-card-body > div.ant-row.ant-row-bottom.BTRow-xs > div:nth-child(2) > button"));
             e.Click();
             Thread.Sleep(1000);
             
             //Click save for apply --then bump out bill window
-            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(25) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter > button"));
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter > button"));
             e.Click();
             Thread.Sleep(10000);
             
             //Save apply -then everyting uneditable
-            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(25) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter.Unstuck > button:nth-child(1)"));
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter.Unstuck > button:nth-child(1)"));
             e.Click();
             Thread.Sleep(10000);
             
             //Close Bill
-            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(25) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalHeader > button"));
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalHeader > button"));
             e.Click();
             Thread.Sleep(1000);
             
             //Save Purchase Order
-            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(20) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter.Unstuck > button:nth-child(1)"));
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(19) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter.Unstuck > button:nth-child(1)"));
             e.Click();
             Thread.Sleep(10000);
             
             //Close Purchase Order
-            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(20) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalHeader.Unstuck > button"));
+            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(19) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalHeader.Unstuck > button"));
             e.Click();
             Thread.Sleep(1000);
             String projectNo = Convert.ToString(row["Project No"]) + "-" + Convert.ToString(num);
