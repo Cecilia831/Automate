@@ -36,8 +36,8 @@ namespace Automate
             Console.WriteLine("{0} projects wait in line", ProNum - 1);
             while (ProNum > 1)
             {
-                //FinancialBillsPOs(Login);
-                //SearchAndNewPO(Login, r);
+                FinancialBillsPOs(Login);
+                SearchAndNewPO(Login, r);
                 Console.WriteLine("**********************************");
                 foreach (KeyValuePair<string, string> ele in r)
                     Console.WriteLine("{0}: {1}", ele.Key, ele.Value);
@@ -278,16 +278,18 @@ namespace Automate
             e.Click();
             Thread.Sleep(1000);
 
-            //Click save for apply --then bump out bill window
-            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(25) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter > button"));
-            //e = d.FindElement(By.XPath("//*[text()='Save']"));
+            //Click save for apply -- then bump out bill window
+            //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(25) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter > button"));
+            e = d.FindElement(By.XPath("//*[text()='Save']"));
+            //*[@id="ctl00_ctl00_bodyTagControl"]/div[15]/div/div[2]/div/div[2]/div[1]/div/div[3]/button
             ///html/body/div[16]/div/div[2]/div/div[2]/div/div/div[3]/button
 
             e.Click();
             Thread.Sleep(10000);
-            
+
             //Save apply -then everyting uneditable
-            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(25) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter.Unstuck > button:nth-child(1)"));
+            //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(25) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter.Unstuck > button:nth-child(1)"));
+            e = d.FindElement(By.XPath("//*[text()='Save']"));
             e.Click();
             Thread.Sleep(10000);
             
