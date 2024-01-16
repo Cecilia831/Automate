@@ -36,8 +36,8 @@ namespace Automate
             Console.WriteLine("{0} projects wait in line", ProNum - 1);
             while (ProNum > 1)
             {
-                FinancialBillsPOs(Login);
-                SearchAndNewPO(Login, r);
+                //FinancialBillsPOs(Login);
+                //SearchAndNewPO(Login, r);
                 Console.WriteLine("**********************************");
                 foreach (KeyValuePair<string, string> ele in r)
                     Console.WriteLine("{0}: {1}", ele.Key, ele.Value);
@@ -280,7 +280,7 @@ namespace Automate
 
             //Click save for apply -- then bump out bill window
             //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(25) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter > button"));
-            e = d.FindElement(By.XPath("//*[text()='Save']"));
+            e = d.FindElement(By.XPath("//*[@type = 'submit'][@data-testid='save']"));
             //*[@id="ctl00_ctl00_bodyTagControl"]/div[15]/div/div[2]/div/div[2]/div[1]/div/div[3]/button
             ///html/body/div[16]/div/div[2]/div/div[2]/div/div/div[3]/button
 
@@ -289,22 +289,28 @@ namespace Automate
 
             //Save apply -then everyting uneditable
             //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(25) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter.Unstuck > button:nth-child(1)"));
-            e = d.FindElement(By.XPath("//*[text()='Save']"));
+            e = d.FindElement(By.XPath("//*[@type = 'button'][@data-testid = 'save'][@tracking = '[object Object]'][@ aria-disabled= 'false']"));
+
+
+            //<button data-testid="save" tracking="[object Object]" aria-disabled="false" type="button" class="ant-btn ant-btn-primary BTButton AutoSizing"><span>Save</span></button>
             e.Click();
             Thread.Sleep(10000);
             
             //Close Bill
-            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(25) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalHeader > button"));
+            //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(25) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalHeader > button"));
+            e = d.FindElement(By.XPath("//*[@type = 'button'][@data-testid='close']"));
             e.Click();
             Thread.Sleep(1000);
-            
+
             //Save Purchase Order
-            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(20) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter.Unstuck > button:nth-child(1)"));
+            //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(20) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter.Unstuck > button:nth-child(1)"));
+            e = d.FindElement(By.XPath("//*[@type = 'button'][@data-testid='save']"));
             e.Click();
             Thread.Sleep(10000);
-            
+
             //Close Purchase Order
-            e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(20) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalHeader.Unstuck > button"));
+            //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(20) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalHeader.Unstuck > button"));
+            e = d.FindElement(By.XPath("//*[@type = 'button'][@data-testid='close']"));
             e.Click();
             Thread.Sleep(1000);
             String projectNo = Convert.ToString(row["Project No"]) + Convert.ToString(num);
