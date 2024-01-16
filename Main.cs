@@ -281,7 +281,7 @@ namespace Automate
 
             //Click save for apply -- then bump out bill window
             //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(25) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter > button"));
-            e = d.FindElement(By.XPath("//*[@type = 'submit'][@data-testid='save']"));
+            e = d.FindElement(By.XPath("//*[@type='submit'][@data-testid='save']"));
             e.Click();
             Thread.Sleep(2000);
 
@@ -298,11 +298,9 @@ namespace Automate
             invoiceDate = invoiceDate.Remove(foundS + 1);
             e.SendKeys(invoiceDate + OpenQA.Selenium.Keys.Enter);
 
-            //Save apply -then everyting uneditable
+            //Save Bill
             //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(25) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter.Unstuck > button:nth-child(1)"));
-            e = d.FindElement(By.XPath("//*[@type = 'button'][@data-testid = 'save'][@tracking = '[object Object]'][@ aria-disabled= 'false']"));
-
-
+            e = d.FindElement(By.XPath("//*[@type='button'][@data-testid='save'][@class=\"ant-btn ant-btn-primary BTButton AutoSizing\"]"));
             //<button data-testid="save" tracking="[object Object]" aria-disabled="false" type="button" class="ant-btn ant-btn-primary BTButton AutoSizing"><span>Save</span></button>
             e.Click();
             Thread.Sleep(2000);
