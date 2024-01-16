@@ -19,6 +19,7 @@ using System.Windows.Forms;
 using System.Windows.Media.Media3D;
 using System.Collections;
 using GemBox.Spreadsheet.Tables;
+using System.Xml.Linq;
 
 namespace Automate
 {
@@ -281,11 +282,21 @@ namespace Automate
             //Click save for apply -- then bump out bill window
             //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(25) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter > button"));
             e = d.FindElement(By.XPath("//*[@type = 'submit'][@data-testid='save']"));
-            //*[@id="ctl00_ctl00_bodyTagControl"]/div[15]/div/div[2]/div/div[2]/div[1]/div/div[3]/button
-            ///html/body/div[16]/div/div[2]/div/div[2]/div/div/div[3]/button
-
             e.Click();
-            Thread.Sleep(10000);
+            Thread.Sleep(2000);
+
+            //Find invoice date
+            e = d.FindElement(By.XPath("//*[@id=\"invoiceDate\"]"));
+            e.SendKeys(OpenQA.Selenium.Keys.Control + 'a');
+            e.SendKeys(OpenQA.Selenium.Keys.Delete);
+            //Send 12 Backspaces to clear date
+            //e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace);
+            //e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace);
+            string invoiceDate = row["Invoice Date"];
+            invoiceDate = invoiceDate.Trim();
+            int foundS = invoiceDate.IndexOf(" ");
+            invoiceDate = invoiceDate.Remove(foundS + 1);
+            e.SendKeys(invoiceDate + OpenQA.Selenium.Keys.Enter);
 
             //Save apply -then everyting uneditable
             //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(25) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter.Unstuck > button:nth-child(1)"));
@@ -294,7 +305,7 @@ namespace Automate
 
             //<button data-testid="save" tracking="[object Object]" aria-disabled="false" type="button" class="ant-btn ant-btn-primary BTButton AutoSizing"><span>Save</span></button>
             e.Click();
-            Thread.Sleep(10000);
+            Thread.Sleep(2000);
             
             //Close Bill
             //e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(25) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalHeader > button"));
