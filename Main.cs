@@ -241,6 +241,7 @@ namespace Automate
             //#ctl00_ctl00_bodyTagControl > div:nth-child(19) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div.ant-modal-body > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.removeBodyPadding > div > div:nth-child(5) > div.ant-card-body > div > div:nth-child(2) > form > div > div > div > div > div > div > div > div > div.ant-table-body > div > table > tbody > tr.ant-table-row.ant-table-row-level-0.actionRow.none > td.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.text-left > button
             //I don't know why the directory is changing, but this selector work the best (19-20-24-26-27) If start from beginning 24 works, next will be 29 (+5)
             e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(19) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div.ant-modal-body > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.removeBodyPadding > div > div:nth-child(5) > div.ant-card-body > div > div:nth-child(2) > form > div > div > div > div > div > div > div > div > div.ant-table-body > div > table > tbody > tr.ant-table-row.ant-table-row-level-0.actionRow.none > td.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.text-left > button"));
+            //#ctl00_ctl00_bodyTagControl > div:nth-child(19) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div.ant-modal-body > div > div.ModalContentContainer > form > main > div > div.ant-col.margin-bottom-xs.ant-col-xs-24.ant-col-sm-18 > div.ant-card.PageSection.removeBodyPadding > div > div:nth-child(5) > div.ant-card-body > div > div:nth-child(2) > form > div > div > div > div > div > div > div > div > div.ant-table-body > div > table > tbody > tr.ant-table-row.ant-table-row-level-0.actionRow.none > td.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.text-left > button
             Thread.Sleep(1000);
             e.Click();
             Thread.Sleep(1000);
@@ -291,7 +292,20 @@ namespace Automate
             e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter > button"));
             e.Click();
             Thread.Sleep(10000);
-            
+
+            //Find invoice date
+            e = d.FindElement(By.XPath("//*[@id=\"invoiceDate\"]"));
+            e.SendKeys(OpenQA.Selenium.Keys.Control + 'a');
+            e.SendKeys(OpenQA.Selenium.Keys.Delete);
+            //Send 12 Backspaces to clear date
+            //e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace);
+            //e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace);
+            string invoiceDate = row["Invoice Date"];
+            invoiceDate = invoiceDate.Trim();
+            int foundS = invoiceDate.IndexOf(" ");
+            invoiceDate = invoiceDate.Remove(foundS + 1);
+            e.SendKeys(invoiceDate + OpenQA.Selenium.Keys.Enter);
+
             //Save apply -then everyting uneditable
             e = d.FindElement(By.CssSelector("#ctl00_ctl00_bodyTagControl > div:nth-child(24) > div > div.ant-modal-wrap.buildertrend-custom-modal.buildertrend-custom-modal-no-header > div > div.ant-modal-content > div > div > div.BTModalFooter.Unstuck > button:nth-child(1)"));
             e.Click();
