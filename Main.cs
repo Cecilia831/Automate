@@ -281,7 +281,7 @@ namespace Automate
             Thread.Sleep(5000);
 
             //Find invoice date
-            IWebElement e = d.FindElement(By.XPath("//*[@id=\"invoiceDate\"]"));
+            e = d.FindElement(By.XPath("//*[@id=\"invoiceDate\"]"));
             e.SendKeys(OpenQA.Selenium.Keys.Control + 'a');
             e.SendKeys(OpenQA.Selenium.Keys.Delete);
             string invoiceDate = row["Invoice Date"];
