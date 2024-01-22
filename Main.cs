@@ -289,15 +289,30 @@ namespace Automate
             int foundS = invoiceDate.IndexOf(" ");
             invoiceDate = invoiceDate.Remove(foundS + 1);
             e.SendKeys(invoiceDate);
+            Thread.Sleep(1000);
             e.SendKeys(OpenQA.Selenium.Keys.Enter);
+            Thread.Sleep(1000);
 
             //Save Bill
-            e = d.FindElement(By.XPath("//*[@data-testid='addToOwnerInvoiceMenu']//preceding-sibling::button[@data-testid='save']"));
+           
+            e.Click();
+            e = d.FindElement(By.XPath("//*[@id=\"ctl00_ctl00_bodyTagControl\"]/div[15]/div/div[2]/div/div[2]/div[1]/div/div[3]/button[1]"));
+            Console.WriteLine(e);
+
+            e = d.FindElement(By.XPath("//*[@data-testid='newInvoice-button']"));
+            Console.WriteLine(e);
+
+            e = d.FindElement(By.XPath("//*[@data-testid='newInvoice-button']/parent::a"));
+            Console.WriteLine(e);
+
+            e = d.FindElement(By.XPath("//*[@data-testid='newInvoice-button']/parent::a/preceding-sibling::button[@data-testid='save']"));
+            Console.WriteLine(e);
+
             e.Click();
             Thread.Sleep(10000);
 
             //Close Bill
-            e = d.FindElement(By.XPath("//*[@data-testid='addToOwnerInvoiceMenu']/parent::div/preceding-sibling::div[@class='BTModalHeader Unstuck']/child::button[@data-testid='close']"));
+            e = d.FindElement(By.XPath("//*[@data-testid='obpMarkReadyForPayment']/parent::div/preceding-sibling::div[@class='BTModalHeader Unstuck']/child::button[@data-testid='close']"));
             e.Click();
             Thread.Sleep(1000);
             
