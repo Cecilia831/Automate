@@ -37,8 +37,8 @@ namespace Automate
             Console.WriteLine("{0} projects wait in line", ProNum - 1);
             while (ProNum > 1)
             {
-                //FinancialBillsPOs(Login);
-                //SearchAndNewPO(Login, r);
+                FinancialBillsPOs(Login);
+                SearchAndNewPO(Login, r);
                 Console.WriteLine("**********************************");
                 foreach (KeyValuePair<string, string> ele in r)
                     Console.WriteLine("{0}: {1}", ele.Key, ele.Value);
@@ -294,19 +294,16 @@ namespace Automate
             Thread.Sleep(1000);
 
             //Save Bill
-           
-            e.Click();
-            e = d.FindElement(By.XPath("//*[@id=\"ctl00_ctl00_bodyTagControl\"]/div[15]/div/div[2]/div/div[2]/div[1]/div/div[3]/button[1]"));
-            Console.WriteLine(e);
 
-            e = d.FindElement(By.XPath("//*[@data-testid='newInvoice-button']"));
-            Console.WriteLine(e);
+            //*[@id="ctl00_ctl00_bodyTagControl"]/div[13]/div/div[2]/div/div[2]/div[1]/div/div[3]/button[1]
+            //e = d.FindElement(By.XPath("//*[@id=\"ctl00_ctl00_bodyTagControl\"]/div[15]/div/div[2]/div/div[2]/div[1]/div/div[3]/button[1]"));
+            //Console.WriteLine(e);
 
-            e = d.FindElement(By.XPath("//*[@data-testid='newInvoice-button']/parent::a"));
-            Console.WriteLine(e);
+            e = d.FindElement(By.XPath("//*[@data-testid='obpMarkReadyForPayment']"));
+            //Console.WriteLine(e);
 
-            e = d.FindElement(By.XPath("//*[@data-testid='newInvoice-button']/parent::a/preceding-sibling::button[@data-testid='save']"));
-            Console.WriteLine(e);
+            e = d.FindElement(By.XPath("//*[@data-testid='obpMarkReadyForPayment']/preceding-sibling::button[@data-testid='save']"));
+            //Console.WriteLine(e);
 
             e.Click();
             Thread.Sleep(10000);
