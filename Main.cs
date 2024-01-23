@@ -141,7 +141,6 @@ namespace Automate
 
             //d.Navigate().GoToUrl("https://buildertrend.net/summaryGrid.aspx");
             
-
             return d;
         }
 
@@ -340,7 +339,6 @@ namespace Automate
             //Close Purchase Order
             e = d.FindElement(By.XPath("//*[@type = 'button'][@data-testid='close']"));
             e.Click();
-
             Thread.Sleep(1000);
             String projectNo = Convert.ToString(row["Project No"]) +"-"+ Convert.ToString(num);
             Console.WriteLine("{0} is saved!", projectNo);
