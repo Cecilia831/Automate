@@ -195,13 +195,17 @@ namespace Automate
 
         static void SearchAndNewPO(ChromeDriver d, IDictionary<String, String> row) {
             Thread.Sleep(2000);
-            d.FindElement(By.Id("JobSearch")).SendKeys(row["Project No"]);
+            IWebElement e = d.FindElement(By.Id("JobSearch"));
+            e.SendKeys(row["Project No"]);
             Thread.Sleep(2000);
-            d.FindElement(By.ClassName("ItemRowJobName")).Click();// Click to Job Order
+            e = d.FindElement(By.ClassName("ItemRowJobName"));
+            e.Click();// Click to Job Order
             Thread.Sleep(5000);
             //Find and click New -> PO
-            d.FindElement(By.CssSelector("#rc-tabs-0-panel-1 > div > div.GridContainer-Header.StickyLayoutHeader.isTitle > header > button.ant-btn.ant-btn-success.ant-dropdown-trigger.BTDropdown.BTButton.AutoSizing")).Click();
-            d.FindElement(By.CssSelector("#rc-tabs-0-panel-1 > div > div.GridContainer-Header.StickyLayoutHeader.isTitle > header > div > div > div > ul > li:nth-child(1) > span > a")).Click();
+            e = d.FindElement(By.CssSelector("#rc-tabs-0-panel-1 > div > div.GridContainer-Header.StickyLayoutHeader.isTitle > header > button.ant-btn.ant-btn-success.ant-dropdown-trigger.BTDropdown.BTButton.AutoSizing"));
+            e.Click();
+            e = d.FindElement(By.CssSelector("#rc-tabs-0-panel-1 > div > div.GridContainer-Header.StickyLayoutHeader.isTitle > header > div > div > div > ul > li:nth-child(1) > span > a"));
+            e.Click();
         }
 
         static string AddDaysToToday(int day)
@@ -225,6 +229,21 @@ namespace Automate
             e = d.FindElement(By.CssSelector("#performingUserId"));
             e.SendKeys(row["Assigned to"] + OpenQA.Selenium.Keys.Enter);
             Thread.Sleep(1000);
+
+            // If new assignee, then Add to Job
+            try
+            {
+                e = d.FindElement(By.XPath("//*[@data-testid='confirmPrompt' and @type='button']"));
+                e.Click();
+                Thread.Sleep(3000);
+                Console.WriteLine("Add New Assignee to Job");
+            }
+            catch
+            {
+            }
+            finally {
+                e = d.FindElement(By.CssSelector("#title"));
+            }
 
             //Click the Item button
             e.SendKeys(OpenQA.Selenium.Keys.PageDown);
@@ -323,7 +342,7 @@ namespace Automate
             e.Click();
 
             Thread.Sleep(1000);
-            String projectNo = Convert.ToString(row["Project No"]) + Convert.ToString(num);
+            String projectNo = Convert.ToString(row["Project No"]) +"-"+ Convert.ToString(num);
             Console.WriteLine("{0} is saved!", projectNo);
             
         }
