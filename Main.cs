@@ -140,7 +140,7 @@ namespace Automate
             var d = new ChromeDriver(options);
 
             //d.Navigate().GoToUrl("https://buildertrend.net/summaryGrid.aspx");
-            
+
             return d;
         }
 
@@ -185,14 +185,16 @@ namespace Automate
             }
         }
 
-        static int CheckProjectsNum() {
+        static int CheckProjectsNum()
+        {
             ExcelFile workbook = ExcelFile.Load("Input sheet.xlsx");
             ExcelWorksheet worksheet = workbook.Worksheets.First();
             int rows = worksheet.Rows.Count();
             return rows;
         }
 
-        static void SearchAndNewPO(ChromeDriver d, IDictionary<String, String> row) {
+        static void SearchAndNewPO(ChromeDriver d, IDictionary<String, String> row)
+        {
             Thread.Sleep(2000);
             IWebElement e = d.FindElement(By.Id("JobSearch"));
             e.SendKeys(row["Project No"]);
@@ -217,7 +219,8 @@ namespace Automate
             return date;
         }
 
-        static void InputPO(WebDriver d, IDictionary <String, String> row) {
+        static void InputPO(WebDriver d, IDictionary<String, String> row)
+        {
             Thread.Sleep(7000);
             // Enter Title
             IWebElement e = d.FindElement(By.CssSelector("#title"));
@@ -240,7 +243,12 @@ namespace Automate
             catch
             {
             }
+<<<<<<< HEAD
+            finally
+            {
+=======
             finally {
+>>>>>>> Dynamic-XPath
                 e = d.FindElement(By.CssSelector("#title"));
             }
 
@@ -330,7 +338,7 @@ namespace Automate
             e = d.FindElement(By.XPath("//*[@data-testid='obpMarkReadyForPayment']/parent::div/preceding-sibling::div[@class='BTModalHeader Unstuck']/child::button[@data-testid='close']"));
             e.Click();
             Thread.Sleep(1000);
-            
+
             //Save Purchase Order
             e = d.FindElement(By.XPath("//*[@type = 'button'][@data-testid='save']"));
             e.Click();
@@ -340,9 +348,15 @@ namespace Automate
             e = d.FindElement(By.XPath("//*[@type = 'button'][@data-testid='close']"));
             e.Click();
             Thread.Sleep(1000);
+<<<<<<< HEAD
+            String projectNo = Convert.ToString(row["Project No"]) + "-" + Convert.ToString(num);
+            Console.WriteLine("{0} is saved!", projectNo);
+
+=======
             String projectNo = Convert.ToString(row["Project No"]) +"-"+ Convert.ToString(num);
             Console.WriteLine("{0} is saved!", projectNo);
             
+>>>>>>> Dynamic-XPath
         }
 
         static void DeleteFromInputSheet() {
