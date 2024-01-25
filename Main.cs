@@ -174,7 +174,7 @@ namespace Automate
                 //Click Close Button
                 e = d.FindElement(By.CssSelector("#btnCloseIntercom"));
                 e.Click();
-                Thread.Sleep(3000);
+                Thread.Sleep(1000);
             }
             catch
             {
@@ -185,14 +185,16 @@ namespace Automate
             }
         }
 
-        static int CheckProjectsNum() {
+        static int CheckProjectsNum()
+        {
             ExcelFile workbook = ExcelFile.Load("Input sheet.xlsx");
             ExcelWorksheet worksheet = workbook.Worksheets.First();
             int rows = worksheet.Rows.Count();
             return rows;
         }
 
-        static void SearchAndNewPO(ChromeDriver d, IDictionary<String, String> row) {
+        static void SearchAndNewPO(ChromeDriver d, IDictionary<String, String> row)
+        {
             Thread.Sleep(2000);
             IWebElement e = d.FindElement(By.Id("JobSearch"));
             e.SendKeys(row["Project No"]);
