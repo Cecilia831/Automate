@@ -217,7 +217,8 @@ namespace Automate
             return date;
         }
 
-        static void InputPO(WebDriver d, IDictionary <String, String> row) {
+        static void InputPO(WebDriver d, IDictionary<String, String> row)
+        {
             Thread.Sleep(7000);
             // Enter Title
             IWebElement e = d.FindElement(By.CssSelector("#title"));
@@ -342,8 +343,8 @@ namespace Automate
             e.Click();
             Thread.Sleep(1000);
             String projectNo = Convert.ToString(row["Project No"]) + "-" + Convert.ToString(num);
-
             Console.WriteLine("{0} is saved!", projectNo);
+
         }
 
         static void DeleteFromInputSheet() {
