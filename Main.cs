@@ -20,6 +20,7 @@ using System.Windows.Media.Media3D;
 using System.Collections;
 using GemBox.Spreadsheet.Tables;
 using System.Xml.Linq;
+using System.Linq.Expressions;
 
 namespace Automate
 {
@@ -149,12 +150,19 @@ namespace Automate
         {
             Thread.Sleep(5000);
             //Find Financial
-            var b = d.FindElement(By.XPath("//html/body/div[2]/div/div/div[3]/form/div[3]/div[4]/div/div/div[1]/div/div[1]/div/div[6]/button"));
-            b.Click();
-            Thread.Sleep(2000);
-            //Find Purchase Order
-            var BP = d.FindElement(By.XPath("//*[@id=\"reactMainNavigation\"]/div/div[1]/div/div[6]/div/div/div/ul/li[3]/span/div/div/a/div/div/div[2]/div"));
-            BP.Click();
+            try
+            {
+                var b = d.FindElement(By.XPath("//html/body/div[2]/div/div/div[3]/form/div[3]/div[4]/div/div/div[1]/div/div[1]/div/div[6]/button"));
+                b.Click();
+                Thread.Sleep(2000);
+                //Find Purchase Order
+                var BP = d.FindElement(By.XPath("//*[@id=\"reactMainNavigation\"]/div/div[1]/div/div[6]/div/div/div/ul/li[3]/span/div/div/a/div/div/div[2]/div"));
+                BP.Click();
+            }
+
+            catch {
+                Console.WriteLine("Failed to Goto Purchase Order Page. Please Restart and Leave the Chrome Visuable.");
+            }
             Thread.Sleep(5000);
 
             // Close the chatbox if possible
@@ -195,18 +203,24 @@ namespace Automate
 
         static void SearchAndNewPO(ChromeDriver d, IDictionary<String, String> row)
         {
-            Thread.Sleep(2000);
-            IWebElement e = d.FindElement(By.Id("JobSearch"));
-            e.SendKeys(row["Project No"]);
-            Thread.Sleep(2000);
-            e = d.FindElement(By.ClassName("ItemRowJobName"));
-            e.Click();// Click to Job Order
-            Thread.Sleep(5000);
-            //Find and click New -> PO
-            e = d.FindElement(By.CssSelector("#rc-tabs-0-panel-1 > div > div.GridContainer-Header.StickyLayoutHeader.isTitle > header > button.ant-btn.ant-btn-success.ant-dropdown-trigger.BTDropdown.BTButton.AutoSizing"));
-            e.Click();
-            e = d.FindElement(By.CssSelector("#rc-tabs-0-panel-1 > div > div.GridContainer-Header.StickyLayoutHeader.isTitle > header > div > div > div > ul > li:nth-child(1) > span > a"));
-            e.Click();
+            try
+            {
+                Thread.Sleep(2000);
+                IWebElement e = d.FindElement(By.Id("JobSearch"));
+                e.SendKeys(row["Project No"]);
+                Thread.Sleep(2000);
+                e = d.FindElement(By.ClassName("ItemRowJobName"));
+                e.Click();// Click to Job Order
+                Thread.Sleep(5000);
+                //Find and click New -> PO
+                e = d.FindElement(By.CssSelector("#rc-tabs-0-panel-1 > div > div.GridContainer-Header.StickyLayoutHeader.isTitle > header > button.ant-btn.ant-btn-success.ant-dropdown-trigger.BTDropdown.BTButton.AutoSizing"));
+                e.Click();
+                e = d.FindElement(By.CssSelector("#rc-tabs-0-panel-1 > div > div.GridContainer-Header.StickyLayoutHeader.isTitle > header > div > div > div > ul > li:nth-child(1) > span > a"));
+                e.Click();
+            }
+            catch {
+                Console.WriteLine("Failed to Search PO number.");
+            }
         }
 
         static string AddDaysToToday(int day)
@@ -221,131 +235,137 @@ namespace Automate
 
         static void InputPO(WebDriver d, IDictionary<String, String> row)
         {
-            Thread.Sleep(7000);
-            // Enter Title
-            IWebElement e = d.FindElement(By.CssSelector("#title"));
-            e.SendKeys(row["Title"]);
-            Thread.Sleep(1000);
-
-            //Enter Assign to
-            e = d.FindElement(By.CssSelector("#performingUserId"));
-            e.SendKeys(row["Assigned to"] + OpenQA.Selenium.Keys.Enter);
-            Thread.Sleep(1000);
-
-            // If new assignee, then Add to Job
             try
             {
-                e = d.FindElement(By.XPath("//*[@data-testid='confirmPrompt' and @type='button']"));
+                Thread.Sleep(7000);
+                // Enter Title
+                IWebElement e = d.FindElement(By.CssSelector("#title"));
+                e.SendKeys(row["Title"]);
+                Thread.Sleep(1000);
+
+                //Enter Assign to
+                e = d.FindElement(By.CssSelector("#performingUserId"));
+                e.SendKeys(row["Assigned to"] + OpenQA.Selenium.Keys.Enter);
+                Thread.Sleep(1000);
+
+                // If new assignee, then Add to Job
+                try
+                {
+                    e = d.FindElement(By.XPath("//*[@data-testid='confirmPrompt' and @type='button']"));
+                    e.Click();
+                    Thread.Sleep(3000);
+                    Console.WriteLine("Add New Assignee to Job");
+                }
+                catch
+                {
+                }
+                finally
+                {
+                    e = d.FindElement(By.CssSelector("#title"));
+                }
+
+                //Click the Item button
+                e.SendKeys(OpenQA.Selenium.Keys.PageDown);
+                e.SendKeys(OpenQA.Selenium.Keys.PageDown);
+                Thread.Sleep(1000);
+                e = d.FindElement(By.XPath("//*[text()='Item']"));
+                e.Click();
+                Thread.Sleep(2000);
+
+                //Send Title2
+                e = d.FindElement(By.CssSelector("#purchaseOrderLineItems\\[0\\]\\.itemTitle"));
+                e.SendKeys(row["Title2"]);
+                Thread.Sleep(1000);
+
+                //Send Unit Cost, Clear Unit Const by send 6 Backspaces
+                e = d.FindElement(By.CssSelector("#purchaseOrderLineItems\\[0\\]\\.unitCost"));
+                e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace);
+                Thread.Sleep(1000);
+                e.SendKeys(row["Unit Cost"] + OpenQA.Selenium.Keys.Enter);
+                Thread.Sleep(1000);
+
+                //Send Cost Code
+                e = d.FindElement(By.CssSelector("#purchaseOrderLineItems\\[0\\]\\.costCodeId"));
+                e.SendKeys(row["Cost Code"] + OpenQA.Selenium.Keys.Enter);
+                Thread.Sleep(2000);
+
+                //Click outsite item and save
+                e = d.FindElement(By.XPath("//*[text()='Please Save the Purchase Order before viewing Bills.']"));
+                e.Click();
+                Thread.Sleep(1000);
+                e = d.FindElement(By.XPath("//*[text()='Save']"));
+                e.Click();
+                Thread.Sleep(5000);
+
+                //Grab invoice number
+                e = d.FindElement(By.CssSelector("#purchaseOrderName"));
+                Thread.Sleep(1000);
+                string num = e.GetAttribute("value");
+                Console.WriteLine("Invoive Number is:" + num);
+
+                //Create New Payment Bill
+                e = d.FindElement(By.XPath("//*[text()='New Bill']"));
                 e.Click();
                 Thread.Sleep(3000);
-                Console.WriteLine("Add New Assignee to Job");
+
+                //Click apply 100%
+                e = d.FindElement(By.XPath("//*[text()='Apply']"));
+                e.Click();
+                Thread.Sleep(1000);
+
+                //Click save for apply -- then bump out bill window
+                e = d.FindElement(By.XPath("//*[@type='submit'][@data-testid='save']"));
+                e.Click();
+                Thread.Sleep(5000);
+
+                //Find invoice date
+                e = d.FindElement(By.XPath("//*[@id=\"invoiceDate\"]"));
+                e.SendKeys(OpenQA.Selenium.Keys.Control + 'a');
+                e.SendKeys(OpenQA.Selenium.Keys.Delete);
+                string invoiceDate = row["Invoice Date"];
+                invoiceDate = invoiceDate.Trim();
+                int foundS = invoiceDate.IndexOf(" ");
+                invoiceDate = invoiceDate.Remove(foundS + 1);
+                e.SendKeys(invoiceDate);
+                Thread.Sleep(1000);
+                e.SendKeys(OpenQA.Selenium.Keys.Enter);
+                Thread.Sleep(1000);
+
+                //Save Bill
+
+                //*[@id="ctl00_ctl00_bodyTagControl"]/div[13]/div/div[2]/div/div[2]/div[1]/div/div[3]/button[1]
+                //e = d.FindElement(By.XPath("//*[@id=\"ctl00_ctl00_bodyTagControl\"]/div[15]/div/div[2]/div/div[2]/div[1]/div/div[3]/button[1]"));
+                //Console.WriteLine(e);
+
+                e = d.FindElement(By.XPath("//*[@data-testid='obpMarkReadyForPayment']"));
+                //Console.WriteLine(e);
+
+                e = d.FindElement(By.XPath("//*[@data-testid='obpMarkReadyForPayment']/preceding-sibling::button[@data-testid='save']"));
+                //Console.WriteLine(e);
+
+                e.Click();
+                Thread.Sleep(10000);
+
+                //Close Bill
+                e = d.FindElement(By.XPath("//*[@data-testid='obpMarkReadyForPayment']/parent::div/preceding-sibling::div[@class='BTModalHeader Unstuck']/child::button[@data-testid='close']"));
+                e.Click();
+                Thread.Sleep(1000);
+
+                //Save Purchase Order
+                e = d.FindElement(By.XPath("//*[@type = 'button'][@data-testid='save']"));
+                e.Click();
+                Thread.Sleep(10000);
+
+                //Close Purchase Order
+                e = d.FindElement(By.XPath("//*[@type = 'button'][@data-testid='close']"));
+                e.Click();
+                Thread.Sleep(1000);
+                String projectNo = Convert.ToString(row["Project No"]) + "-" + Convert.ToString(num);
+                Console.WriteLine("{0} is saved!", projectNo);
             }
-            catch
-            {
+            catch {
+                Console.WriteLine("Failed to Input PO Information");
             }
-            finally
-            {
-                e = d.FindElement(By.CssSelector("#title"));
-            }
-
-            //Click the Item button
-            e.SendKeys(OpenQA.Selenium.Keys.PageDown);
-            e.SendKeys(OpenQA.Selenium.Keys.PageDown);
-            Thread.Sleep(1000);
-            e = d.FindElement(By.XPath("//*[text()='Item']"));
-            e.Click();
-            Thread.Sleep(2000);
-
-            //Send Title2
-            e = d.FindElement(By.CssSelector("#purchaseOrderLineItems\\[0\\]\\.itemTitle"));
-            e.SendKeys(row["Title2"]);
-            Thread.Sleep(1000);
-
-            //Send Unit Cost, Clear Unit Const by send 6 Backspaces
-            e = d.FindElement(By.CssSelector("#purchaseOrderLineItems\\[0\\]\\.unitCost"));
-            e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace); e.SendKeys(OpenQA.Selenium.Keys.Backspace);
-            Thread.Sleep(1000);
-            e.SendKeys(row["Unit Cost"] + OpenQA.Selenium.Keys.Enter);
-            Thread.Sleep(1000);
-
-            //Send Cost Code
-            e = d.FindElement(By.CssSelector("#purchaseOrderLineItems\\[0\\]\\.costCodeId"));
-            e.SendKeys(row["Cost Code"] + OpenQA.Selenium.Keys.Enter);
-            Thread.Sleep(2000);
-
-            //Click outsite item and save
-            e = d.FindElement(By.XPath("//*[text()='Please Save the Purchase Order before viewing Bills.']"));
-            e.Click();
-            Thread.Sleep(1000);
-            e = d.FindElement(By.XPath("//*[text()='Save']"));
-            e.Click();
-            Thread.Sleep(5000);
-
-            //Grab invoice number
-            e = d.FindElement(By.CssSelector("#purchaseOrderName"));
-            Thread.Sleep(1000);
-            string num = e.GetAttribute("value");
-            Console.WriteLine("Invoive Number is:" + num);
-
-            //Create New Payment Bill
-            e = d.FindElement(By.XPath("//*[text()='New Bill']"));
-            e.Click();
-            Thread.Sleep(3000);
-
-            //Click apply 100%
-            e = d.FindElement(By.XPath("//*[text()='Apply']"));
-            e.Click();
-            Thread.Sleep(1000);
-
-            //Click save for apply -- then bump out bill window
-            e = d.FindElement(By.XPath("//*[@type='submit'][@data-testid='save']"));
-            e.Click();
-            Thread.Sleep(5000);
-
-            //Find invoice date
-            e = d.FindElement(By.XPath("//*[@id=\"invoiceDate\"]"));
-            e.SendKeys(OpenQA.Selenium.Keys.Control + 'a');
-            e.SendKeys(OpenQA.Selenium.Keys.Delete);
-            string invoiceDate = row["Invoice Date"];
-            invoiceDate = invoiceDate.Trim();
-            int foundS = invoiceDate.IndexOf(" ");
-            invoiceDate = invoiceDate.Remove(foundS + 1);
-            e.SendKeys(invoiceDate);
-            Thread.Sleep(1000);
-            e.SendKeys(OpenQA.Selenium.Keys.Enter);
-            Thread.Sleep(1000);
-
-            //Save Bill
-
-            //*[@id="ctl00_ctl00_bodyTagControl"]/div[13]/div/div[2]/div/div[2]/div[1]/div/div[3]/button[1]
-            //e = d.FindElement(By.XPath("//*[@id=\"ctl00_ctl00_bodyTagControl\"]/div[15]/div/div[2]/div/div[2]/div[1]/div/div[3]/button[1]"));
-            //Console.WriteLine(e);
-
-            e = d.FindElement(By.XPath("//*[@data-testid='obpMarkReadyForPayment']"));
-            //Console.WriteLine(e);
-
-            e = d.FindElement(By.XPath("//*[@data-testid='obpMarkReadyForPayment']/preceding-sibling::button[@data-testid='save']"));
-            //Console.WriteLine(e);
-
-            e.Click();
-            Thread.Sleep(10000);
-
-            //Close Bill
-            e = d.FindElement(By.XPath("//*[@data-testid='obpMarkReadyForPayment']/parent::div/preceding-sibling::div[@class='BTModalHeader Unstuck']/child::button[@data-testid='close']"));
-            e.Click();
-            Thread.Sleep(1000);
-
-            //Save Purchase Order
-            e = d.FindElement(By.XPath("//*[@type = 'button'][@data-testid='save']"));
-            e.Click();
-            Thread.Sleep(10000);
-
-            //Close Purchase Order
-            e = d.FindElement(By.XPath("//*[@type = 'button'][@data-testid='close']"));
-            e.Click();
-            Thread.Sleep(1000);
-            String projectNo = Convert.ToString(row["Project No"]) + "-" + Convert.ToString(num);
-            Console.WriteLine("{0} is saved!", projectNo);
 
         }
 
