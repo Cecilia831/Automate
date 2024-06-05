@@ -152,7 +152,6 @@ namespace Automate
             //Find Financial
             try
             {
-
                 var b = d.FindElement(By.XPath("//html/body/div[2]/div/div/div[3]/form/div[3]/div[4]/div/div/div[1]/div/div[1]/div/div[6]/button"));
                 b.Click();
                 Thread.Sleep(2000);
@@ -160,8 +159,8 @@ namespace Automate
                 var BP = d.FindElement(By.XPath("//*[@id=\"reactMainNavigation\"]/div/div[1]/div/div[6]/div/div/div/ul/li[3]/span/div/div/a/div/div/div[2]/div"));
                 BP.Click();
             }
-
-            catch {
+            catch
+            {
                 Console.WriteLine("Failed to goto Purchase Order Page. Please Manually goto Purchase Order Page and leave the Chrome visible.");
             }
             Thread.Sleep(3000);
@@ -170,18 +169,21 @@ namespace Automate
             try {
                 var b = d.FindElement(By.XPath("//*[@data-testid='clear-search' and @type='button']"));
                 b.Click();
+                Thread.Sleep(10000);
             }
-            catch { }
+            catch {
+            }
 
             // Close the chatbox if possible
             try
             {
                 //IFrame - Close ChatBox
+                Console.WriteLine("Try to Close Chatbox");
                 //Switch to the frame
                 d.SwitchTo().Frame("intercom-launcher-frame");
                 Thread.Sleep(3000);
                 //Now click the button
-                var e = d.FindElement(By.CssSelector("#intercom-container > div > div > div.intercom-1epm6qj.e11rlguj3 > svg"));
+                var e = d.FindElement(By.XPath("//*[@id='intercom-container']/div/div/div[2]"));
                 e.Click();
                 Thread.Sleep(1000);
                 // Return to the top level
@@ -194,6 +196,7 @@ namespace Automate
             }
             catch
             {
+                //Console.WriteLine("No Chat Box");
             }
             finally
             {
@@ -226,35 +229,10 @@ namespace Automate
                 e.Click();
                 e = d.FindElement(By.CssSelector("#rc-tabs-0-panel-1 > div > div.GridContainer-Header.StickyLayoutHeader.isTitle > header > div > div > div > ul > li:nth-child(1) > span > a"));
                 e.Click();
+                Thread.Sleep(5000);
             }
             catch {
                 Console.WriteLine("Failed to Search PO number.");
-            }
-            // Close the chatbox if possible
-            try
-            {
-                //IFrame - Close ChatBox
-                //Switch to the frame
-                d.SwitchTo().Frame("intercom-launcher-frame");
-                Thread.Sleep(3000);
-                //Now click the button
-                var e = d.FindElement(By.CssSelector("#intercom-container > div > div > div.intercom-1epm6qj.e11rlguj3 > svg"));
-                e.Click();
-                Thread.Sleep(1000);
-                // Return to the top level
-                d.SwitchTo().DefaultContent();
-                Thread.Sleep(3000);
-                //Click Close Button
-                e = d.FindElement(By.CssSelector("#btnCloseIntercom"));
-                e.Click();
-                Thread.Sleep(1000);
-            }
-            catch
-            {
-            }
-            finally
-            {
-                d.SwitchTo().DefaultContent();
             }
         }
 
@@ -270,8 +248,6 @@ namespace Automate
 
         static void InputPO(WebDriver d, IDictionary<String, String> row)
         {
-            //try
-            //{
                 Thread.Sleep(7000);
                 // Enter Title
                 IWebElement e = d.FindElement(By.CssSelector("#title"));
@@ -309,7 +285,6 @@ namespace Automate
                     e = d.FindElement(By.CssSelector("#title"));
                 }
            
-
                 //Click the Item button
                 e.SendKeys(OpenQA.Selenium.Keys.PageDown);
                 e.SendKeys(OpenQA.Selenium.Keys.PageDown);
@@ -347,7 +322,7 @@ namespace Automate
                 e = d.FindElement(By.CssSelector("#purchaseOrderName"));
                 Thread.Sleep(1000);
                 string num = e.GetAttribute("value");
-                Console.WriteLine("Invoive Number is:" + num);
+                Console.WriteLine("Invoice Number is:" + num);
 
                 //Create New Payment Bill
                 e = d.FindElement(By.XPath("//*[text()='New Bill']"));
@@ -378,17 +353,13 @@ namespace Automate
                 Thread.Sleep(1000);
 
                 //Save Bill
-
-                e = d.FindElement(By.XPath("//*[@data-testid='obpMarkReadyForPayment']"));
-                //Console.WriteLine(e);
-
                 e = d.FindElement(By.XPath("//*[@data-testid='obpMarkReadyForPayment']/preceding-sibling::button[@data-testid='save']"));
                 //Console.WriteLine(e);
-
                 e.Click();
                 Thread.Sleep(10000);
 
                 //Close Bill
+                //e = d.FindElement(By.XPath("//*[@type = 'button'][@data-testid='close']"));
                 e = d.FindElement(By.XPath("//*[@data-testid='obpMarkReadyForPayment']/parent::div/preceding-sibling::div[@class='BTModalHeader Unstuck']/child::button[@data-testid='close']"));
                 e.Click();
                 Thread.Sleep(1000);
@@ -404,11 +375,6 @@ namespace Automate
                 Thread.Sleep(1000);
                 String projectNo = Convert.ToString(row["Project No"]) + "-" + Convert.ToString(num);
                 Console.WriteLine("{0} is saved!", projectNo);
-            //}
-            //catch {
-            //    Console.WriteLine("Failed to Input PO Information. Program will terminate. Please restart.");
-            //}
-
         }
 
         static void DeleteFromInputSheet() {
@@ -429,7 +395,6 @@ namespace Automate
             //Clear Search List
             d.FindElement(By.CssSelector("#reactJobPicker > div > div.ant-list.ant-list-split.BTListVirtual.JobList > div > div > div:nth-child(1) > div > div > li.ant-list-item.JobListItem.AllJobs > div > div"));
             Thread.Sleep(8000);
-            /*
             //Go back to Summary
             var j = d.FindElement(By.CssSelector("#reactMainNavigation > div > div.MainNavDropdownsRow.darken > div > div:nth-child(2) > button"));
             j.Click();
@@ -437,7 +402,6 @@ namespace Automate
             var s = d.FindElement(By.CssSelector("#reactMainNavigation > div > div.MainNavDropdownsRow.darken > div > div:nth-child(2) > div > div > div > ul > li:nth-child(1) > span > div > div > a > div"));
             s.Click();
             Thread.Sleep(2000);
-            */
         }
     }
 }
