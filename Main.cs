@@ -93,41 +93,6 @@ namespace Automate
             }
         }
 
-        static void DisplaySheet() {
-            // Load Excel workbook from file's path.
-            ExcelFile workbook = ExcelFile.Load("Input sheet.xlsx");
-
-            // Iterate through all worksheets in a workbook.
-            foreach (ExcelWorksheet worksheet in workbook.Worksheets)
-            {
-                // Display sheet's name.
-                Console.WriteLine("{1} {0} {1}\n", worksheet.Name, new string('#', 30));
-
-                // Iterate through all rows in a worksheet.
-                foreach (ExcelRow row in worksheet.Rows)
-                {
-                    // Iterate through all allocated cells in a row.
-                    foreach (ExcelCell cell in row.AllocatedCells)
-                    {
-                        // Read cell's data.
-                        string value = cell.Value?.ToString() ?? "EMPTY";
-
-                        // For merged cells, read only the first cell's data.
-                        if (cell.MergedRange != null && cell.MergedRange[0] != cell)
-                            value = "MERGED";
-
-                        // Display cell's value and type.
-                        value = value.Length > 15 ? value.Remove(15) + "…" : value;
-                        Console.Write($"{value} [{cell.ValueType}]".PadRight(30));
-                    }
-
-                    Console.WriteLine();
-                }
-            }
-
-            Console.WriteLine();
-        }
-
         static ChromeDriver LogIn()
         {
             //Disabled all Chrome-level notifications
@@ -178,7 +143,6 @@ namespace Automate
             try
             {
                 //IFrame - Close ChatBox
-                Console.WriteLine("Try to Close Chatbox");
                 //Switch to the frame
                 d.SwitchTo().Frame("intercom-launcher-frame");
                 Thread.Sleep(3000);
@@ -224,10 +188,9 @@ namespace Automate
                 e.Click();// Click to Job Order
                 Thread.Sleep(5000);
                 //Find and click New -> PO
-                e = d.FindElement(By.CssSelector("#rc-tabs-0-panel-1 > div > div.GridContainer-Header.StickyLayoutHeader.isTitle > header > button.ant-btn.ant-btn-success.ant-dropdown-trigger.BTDropdown.BTButton.AutoSizing"));
-                //*[@id="reactOwnerInvoices"]/div/div/div/section/div[1]/div[2]/div[1]/button
+                e = d.FindElement(By.XPath("//*[@data-testid='newPurchaseOrderGroup' and @type='button']"));
                 e.Click();
-                e = d.FindElement(By.CssSelector("#rc-tabs-0-panel-1 > div > div.GridContainer-Header.StickyLayoutHeader.isTitle > header > div > div > div > ul > li:nth-child(1) > span > a"));
+                e = d.FindElement(By.XPath("//*[@data-testid='newPurchaseOrder' and @type='button']"));
                 e.Click();
                 Thread.Sleep(5000);
             }
@@ -354,12 +317,10 @@ namespace Automate
 
                 //Save Bill
                 e = d.FindElement(By.XPath("//*[@data-testid='obpMarkReadyForPayment']/preceding-sibling::button[@data-testid='save']"));
-                //Console.WriteLine(e);
                 e.Click();
                 Thread.Sleep(10000);
 
                 //Close Bill
-                //e = d.FindElement(By.XPath("//*[@type = 'button'][@data-testid='close']"));
                 e = d.FindElement(By.XPath("//*[@data-testid='obpMarkReadyForPayment']/parent::div/preceding-sibling::div[@class='BTModalHeader Unstuck']/child::button[@data-testid='close']"));
                 e.Click();
                 Thread.Sleep(1000);
@@ -396,11 +357,7 @@ namespace Automate
             d.FindElement(By.CssSelector("#reactJobPicker > div > div.ant-list.ant-list-split.BTListVirtual.JobList > div > div > div:nth-child(1) > div > div > li.ant-list-item.JobListItem.AllJobs > div > div"));
             Thread.Sleep(8000);
             //Go back to Summary
-            var j = d.FindElement(By.CssSelector("#reactMainNavigation > div > div.MainNavDropdownsRow.darken > div > div:nth-child(2) > button"));
-            j.Click();
-            Thread.Sleep(1000);
-            var s = d.FindElement(By.CssSelector("#reactMainNavigation > div > div.MainNavDropdownsRow.darken > div > div:nth-child(2) > div > div > div > ul > li:nth-child(1) > span > div > div > a > div"));
-            s.Click();
+            d.Navigate().GoToUrl("https://buildertrend.net/summaryGrid.aspx");
             Thread.Sleep(2000);
         }
     }
