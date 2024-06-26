@@ -166,6 +166,31 @@ namespace Automate
             {
                 d.SwitchTo().DefaultContent();
             }
+
+            // Close Updates From BuilderTrends
+            try
+            {
+                //IFrame - Close ChatBox
+                //Switch to the frame
+                d.SwitchTo().Frame("intercom-notifications-frame");
+                Thread.Sleep(3000);
+                //Now click the button
+                var e = d.FindElement(By.XPath("//*[@id=\"intercom-container\"]/div/div/div/div/div/div[1]/button"));
+                e.Click();
+                Thread.Sleep(1000);
+                // Return to the top level
+                d.SwitchTo().DefaultContent();
+                Thread.Sleep(3000);
+                }
+            catch
+            {
+                //Console.WriteLine("No Updates From BuilderTrends");
+            }
+            finally
+            {
+                d.SwitchTo().DefaultContent();
+            }
+
         }
 
         static int CheckProjectsNum()
