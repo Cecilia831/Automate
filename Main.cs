@@ -348,15 +348,15 @@ namespace Automate
                 //Close Bill
                 e = d.FindElement(By.XPath("//*[@data-testid='obpMarkReadyForPayment']/parent::div/preceding-sibling::div[@class='BTModalHeader Unstuck']/child::button[@data-testid='close']"));
                 e.Click();
-                Thread.Sleep(1000);
+                Thread.Sleep(5000);
 
                 //Save Purchase Order
-                e = d.FindElement(By.XPath("//*[@type = 'button'][@data-testid='save']"));
+                e = d.FindElement(By.XPath("//*[@data-testid='saveAndNew'][@type='button']/preceding-sibling::button[@data-testid='save']"));
                 e.Click();
                 Thread.Sleep(10000);
 
                 //Close Purchase Order
-                e = d.FindElement(By.XPath("//*[@type = 'button'][@data-testid='close']"));
+                e = d.FindElement(By.XPath("//*[@data-testid='close'][@type='button']"));
                 e.Click();
                 Thread.Sleep(1000);
                 String projectNo = Convert.ToString(row["Project No"]) + "-" + Convert.ToString(num);
