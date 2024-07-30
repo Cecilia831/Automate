@@ -7,6 +7,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using GemBox.Spreadsheet;
+using GemBox.Pdf;
+using GemBox.Pdf.Content;
+using GemBox.Pdf.Ocr;
+
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 
@@ -28,8 +32,26 @@ namespace Automate
     {
         static void Main()
         {
-            SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
+            ComponentInfo.SetLicense("FREE-LIMITED-KEY");
+            var readOptions = new OcrReadOptions() { TesseractDataPath = "languagedata" };
+            using (PdfDocument document = OcrReader.Read("PDF.pdf",readOptions))
+            {
+                var page = document.Pages[0];
+                var contentEnumerator = page.Content.Elements.All(page.Transform).GetEnumerator();
 
+                while (contentEnumerator.MoveNext())
+                {
+                    if (contentEnumerator.Current.ElementType == PdfContentElementType.Text)
+                    {
+                        var textElement = (PdfTextContent)contentEnumerator.Current;
+                        Console.WriteLine(textElement.ToString());
+                    }
+                }
+            }
+
+            /*
+            SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
+            
             //BuildSheet();
             //DisplaySheet();
             var Login = LogIn();
@@ -50,6 +72,7 @@ namespace Automate
                 ProNum--;
             }
             Console.WriteLine("**Input sheet is empty. All Projects have entered!**");
+            */
         }
 
         public static class Globals
