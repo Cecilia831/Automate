@@ -346,7 +346,8 @@ namespace Automate
                 Thread.Sleep(10000);
 
                 //Close Bill
-                e = d.FindElement(By.XPath("//*[@data-testid='obpMarkReadyForPayment']/parent::div/preceding-sibling::div[@class='BTModalHeader Unstuck']/child::button[@data-testid='close']"));
+                e = d.FindElement(By.XPath("//*[@class='BTModalHeader']/child::button[@data-testid='close']"));
+                
                 e.Click();
                 Thread.Sleep(5000);
 
