@@ -38,14 +38,18 @@ namespace Automate
             Console.WriteLine("{0} projects wait in line", ProNum - 1);
             while (ProNum > 1)
             {
-                FinancialBillsPOs(Login);
-                SearchAndNewPO(Login, r);
+                //FinancialBillsPOs(Login);
+                //SearchAndNewPO(Login, r);
                 Console.WriteLine("**********************************");
                 foreach (KeyValuePair<string, string> ele in r)
                     Console.WriteLine("{0}: {1}", ele.Key, ele.Value);
-                InputPO(Login, r);
-                DeleteFromInputSheet();
-                ClearSearchBox(Login);
+                if (!CheckDuplicatePO(Login, r))
+                {
+                    InputPO(Login, r);
+                }
+                else { Console.WriteLine("--Exsixting item--"); }
+                //DeleteFromInputSheet();
+                //ClearSearchBox(Login);
                 r = ReadInputRow();
                 ProNum--;
             }
@@ -224,6 +228,32 @@ namespace Automate
             }
         }
 
+        static bool CheckDuplicatePO(WebDriver d, IDictionary<String, String> row)
+        {
+            String s = row["Title"];
+            Console.WriteLine(s);
+            //try
+            //{
+            //IWebElement temp = d.FindElement(By.XPath($"//span[contains(., '{0}')]", s));   
+            //var temp = d.FindElement(By.XPath("//*[contains(text(),'Lowe\'s 78766')]" ));
+            //IWebElement temp = d.FindElement(By.XPath("//span[.='Lowe\'s 78766')]"));
+            //var temp = d.FindElement(By.XPath(String.Format($"//<span>[contsins(text(),{0})]", s)));
+            //var temp = d.FindElement(By.XPath("//*[contains(text(), $s)]"));
+            //string Xpath = $"//*[contains(text(),'{s}""+"]";
+            //Console.WriteLine(Xpath);
+
+            IWebElement temp = d.FindElement(By.XPath("//span[contains(., 's 78766')]"));    // works Lowe's 78766
+            //IWebElement temp = d.FindElement(By.XPath($"//span[contains(., '{0}')]",s));   
+
+            Console.WriteLine(temp+"TRUE");
+                return true; 
+            //}
+            //catch {
+                //Console.WriteLine("FALSE");
+                //return false; 
+            //}
+        }
+        
         static string AddDaysToToday(int day)
         {
             System.DateTime today = System.DateTime.Now;
