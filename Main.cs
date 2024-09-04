@@ -21,6 +21,10 @@ using System.Collections;
 using GemBox.Spreadsheet.Tables;
 using System.Xml.Linq;
 using System.Linq.Expressions;
+using SkiaSharp;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.AxHost;
+using System.Text.RegularExpressions;
 
 namespace Automate
 {
@@ -230,21 +234,23 @@ namespace Automate
 
         static bool CheckDuplicatePO(WebDriver d, IDictionary<String, String> row)
         {
-            String s = row["Title"];
+            string s = row["Title"];
             Console.WriteLine(s);
+            Console.WriteLine("The searching is: "+s);
+            string mySymbleNumber = Regex.Replace(s, @"([a-zA-Z]+)", "");
+            string myNumberSpace = Regex.Replace(mySymbleNumber, @"('+)", "");
+            string mynumber = Regex.Replace(myNumberSpace, @"((^\s))", "");
+            string mynumber2 = Regex.Replace(mynumber, @"((^\s))", "");
+            string mynumber3 = Regex.Replace(mynumber2, @"((^\s))", "");
+            Console.WriteLine(myNumberSpace);
+            Console.WriteLine(mynumber3);
+
             //try
             //{
-            //IWebElement temp = d.FindElement(By.XPath($"//span[contains(., '{0}')]", s));   
-            //var temp = d.FindElement(By.XPath("//*[contains(text(),'Lowe\'s 78766')]" ));
-            //IWebElement temp = d.FindElement(By.XPath("//span[.='Lowe\'s 78766')]"));
-            //var temp = d.FindElement(By.XPath(String.Format($"//<span>[contsins(text(),{0})]", s)));
-            //var temp = d.FindElement(By.XPath("//*[contains(text(), $s)]"));
-            //string Xpath = $"//*[contains(text(),'{s}""+"]";
-            //Console.WriteLine(Xpath);
+            IWebElement temp = d.FindElement(By.XPath(string.Concat("//span[contains(.,", mynumber3, ")]")));
+            //No ' in the XPath Expressions  need to test about - and space
 
-            IWebElement temp = d.FindElement(By.XPath("//span[contains(., 's 78766')]"));    // works Lowe's 78766
-            //IWebElement temp = d.FindElement(By.XPath($"//span[contains(., '{0}')]",s));   
-
+            Console.WriteLine(s+" is found duplicated");
             Console.WriteLine(temp+"TRUE");
                 return true; 
             //}
