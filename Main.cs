@@ -42,18 +42,20 @@ namespace Automate
             Console.WriteLine("{0} projects wait in line", ProNum - 1);
             while (ProNum > 1)
             {
-                //FinancialBillsPOs(Login);
-                //SearchAndNewPO(Login, r);
+                FinancialBillsPOs(Login);
+                SearchNewPO(Login, r);
                 Console.WriteLine("**********************************");
                 foreach (KeyValuePair<string, string> ele in r)
                     Console.WriteLine("{0}: {1}", ele.Key, ele.Value);
                 if (!CheckDuplicatePO(Login, r))
                 {
+                    StartNewPO(Login);
                     InputPO(Login, r);
                 }
                 else { Console.WriteLine("--Exsixting item--"); }
-                //DeleteFromInputSheet();
-                //ClearSearchBox(Login);
+
+                DeleteFromInputSheet();
+                ClearSearchBox(Login);
                 r = ReadInputRow();
                 ProNum--;
             }
@@ -209,7 +211,7 @@ namespace Automate
             return rows;
         }
 
-        static void SearchAndNewPO(ChromeDriver d, IDictionary<String, String> row)
+        static void SearchNewPO(ChromeDriver d, IDictionary<String, String> row)
         {
             try
             {
@@ -220,46 +222,50 @@ namespace Automate
                 e = d.FindElement(By.ClassName("ItemRowJobName"));
                 e.Click();// Click to Job Order
                 Thread.Sleep(5000);
-                //Find and click New -> PO
-                e = d.FindElement(By.XPath("//*[@data-testid='newPurchaseOrderGroup' and @type='button']"));
-                e.Click();
-                e = d.FindElement(By.XPath("//*[@data-testid='newPurchaseOrder' and @type='button']"));
-                e.Click();
-                Thread.Sleep(5000);
             }
             catch {
                 Console.WriteLine("Failed to Search PO number.");
             }
         }
+        
 
         static bool CheckDuplicatePO(WebDriver d, IDictionary<String, String> row)
         {
+            // Clean the project invioce number into digits
             string s = row["Title"];
-            Console.WriteLine(s);
-            Console.WriteLine("The searching is: "+s);
-            string mySymbleNumber = Regex.Replace(s, @"([a-zA-Z]+)", "");
-            string myNumberSpace = Regex.Replace(mySymbleNumber, @"('+)", "");
-            string mynumber = Regex.Replace(myNumberSpace, @"((^\s))", "");
-            string mynumber2 = Regex.Replace(mynumber, @"((^\s))", "");
-            string mynumber3 = Regex.Replace(mynumber2, @"((^\s))", "");
-            Console.WriteLine(myNumberSpace);
-            Console.WriteLine(mynumber3);
+            string symbleNumber = Regex.Replace(s, @"([a-zA-Z]+)", "");
+            string spaceNumber = Regex.Replace(symbleNumber, @"('+)", "");
+            string pureNumber = Regex.Replace(spaceNumber, @"(#+)", "");
+            string invoiceDigit = pureNumber.Trim();
 
+            try
+            {
+                IWebElement temp = d.FindElement(By.XPath(string.Concat("//span[contains(.,", invoiceDigit, ")]")));
+                Console.WriteLine(s+ " is found duplicate");
+                Thread.Sleep(5000);
+                return true; 
+            }
+            catch {
+                Thread.Sleep(5000);
+                return false; 
+            }
+        }
+        static void StartNewPO(ChromeDriver d)
+        {
             //try
             //{
-            IWebElement temp = d.FindElement(By.XPath(string.Concat("//span[contains(.,", mynumber3, ")]")));
-            //No ' in the XPath Expressions  need to test about - and space
-
-            Console.WriteLine(s+" is found duplicated");
-            Console.WriteLine(temp+"TRUE");
-                return true; 
+                //Find and click New -> PO
+                IWebElement e = d.FindElement(By.XPath("//*[@data-testid='newPurchaseOrderGroup' and @type='button']"));
+                e.Click();
+                e = d.FindElement(By.XPath("//*[@data-testid='newPurchaseOrder' and @type='button']"));
+                e.Click();
+                Thread.Sleep(5000);
             //}
-            //catch {
-                //Console.WriteLine("FALSE");
-                //return false; 
+            //catch
+            //{
+                //Console.WriteLine("Failed to Search PO number.");
             //}
         }
-        
         static string AddDaysToToday(int day)
         {
             System.DateTime today = System.DateTime.Now;
