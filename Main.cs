@@ -47,12 +47,14 @@ namespace Automate
                 Console.WriteLine("**********************************");
                 foreach (KeyValuePair<string, string> ele in r)
                     Console.WriteLine("{0}: {1}", ele.Key, ele.Value);
-                if (!CheckDuplicatePO(Login, r))
+                bool duplicate = CheckDuplicatePO(Login, r);
+                //Console.WriteLine(duplicate);
+                if (!duplicate)
                 {
                     StartNewPO(Login);
                     InputPO(Login, r);
                 }
-                else { Console.WriteLine("--Exsixting item--"); }
+                else { Console.WriteLine("--Existing item--"); }
 
                 DeleteFromInputSheet();
                 ClearSearchBox(Login);
@@ -237,7 +239,7 @@ namespace Automate
             string spaceNumber = Regex.Replace(symbleNumber, @"('+)", "");
             string pureNumber = Regex.Replace(spaceNumber, @"(#+)", "");
             string invoiceDigit = pureNumber.Trim();
-
+            //Console.WriteLine("The PO number is:" + invoiceDigit);
             try
             {
                 IWebElement temp = d.FindElement(By.XPath(string.Concat("//span[contains(.,", invoiceDigit, ")]")));
