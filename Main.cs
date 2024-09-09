@@ -345,7 +345,10 @@ namespace Automate
                 e = d.FindElement(By.XPath("//*[text()='Please Save the Purchase Order before viewing Bills.']"));
                 e.Click();
                 Thread.Sleep(1000);
-                e = d.FindElement(By.XPath("//*[text()='Save']"));
+                e = d.FindElement(By.Id("relatedActionsButton"));
+                e.Click();
+                Thread.Sleep(1000);
+                e = d.FindElement(By.Id("save"));
                 e.Click();
                 Thread.Sleep(5000);
 
@@ -383,26 +386,16 @@ namespace Automate
                 e.SendKeys(OpenQA.Selenium.Keys.Enter);
                 Thread.Sleep(1000);
 
-                //Save Bill
-                e = d.FindElement(By.XPath("//*[@data-testid='obpMarkReadyForPayment']/preceding-sibling::button[@data-testid='save']"));
+                //Save Bill and Close
+                e = d.FindElement(By.Id("saveAndCloseButtonId"));
                 e.Click();
                 Thread.Sleep(10000);
 
-                //Close Bill
-                e = d.FindElement(By.XPath("//*[@class='BTModalHeader']/child::button[@data-testid='close']"));
-                
-                e.Click();
-                Thread.Sleep(5000);
-
-                //Save Purchase Order
-                e = d.FindElement(By.XPath("//*[@data-testid='saveAndNew'][@type='button']/preceding-sibling::button[@data-testid='save']"));
+                //Save and Close Purchase Order
+                e = d.FindElement(By.Id("saveAndClose"));
                 e.Click();
                 Thread.Sleep(10000);
 
-                //Close Purchase Order
-                e = d.FindElement(By.XPath("//*[@data-testid='close'][@type='button']"));
-                e.Click();
-                Thread.Sleep(1000);
                 String projectNo = Convert.ToString(row["Project No"]) + "-" + Convert.ToString(num);
                 Console.WriteLine("{0} is saved!", projectNo);
         }
