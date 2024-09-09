@@ -55,7 +55,6 @@ namespace Automate
                     InputPO(Login, r);
                 }
                 else { Console.WriteLine("--Existing item--"); }
-
                 DeleteFromInputSheet();
                 ClearSearchBox(Login);
                 r = ReadInputRow();
@@ -243,7 +242,7 @@ namespace Automate
             try
             {
                 IWebElement temp = d.FindElement(By.XPath(string.Concat("//span[contains(.,", invoiceDigit, ")]")));
-                Console.WriteLine(s+ " is found duplicate");
+                Console.WriteLine(s + " is found duplicate");
                 Thread.Sleep(5000);
                 return true; 
             }
