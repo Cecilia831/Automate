@@ -125,26 +125,14 @@ namespace Automate
         static void FinancialBillsPOs(ChromeDriver d)
         {
             Thread.Sleep(5000);
-            //Find Financial
-            try
-            {
-                var b = d.FindElement(By.XPath("//html/body/div[2]/div/div/div[3]/form/div[3]/div[4]/div/div/div[1]/div/div[1]/div/div[6]/button"));
-                b.Click();
-                Thread.Sleep(2000);
-                //Find Purchase Order
-                var BP = d.FindElement(By.XPath("//*[@id=\"reactMainNavigation\"]/div/div[1]/div/div[6]/div/div/div/ul/li[3]/span/div/div/a/div/div/div[2]/div"));
-                BP.Click();
-            }
-            catch
-            {
-                Console.WriteLine("Failed to goto Purchase Order Page. Please Manually goto Purchase Order Page and leave the Chrome visible.");
-            }
+            //Find Purchase Order Page
+            d.Url = "https://buildertrend.net/app/PurchaseOrders";
             Thread.Sleep(3000);
 
             //Clear Button
             try {
-                var b = d.FindElement(By.XPath("//*[@data-testid='clear-search' and @type='button']"));
-                b.Click();
+                d.FindElement(By.XPath("//*[@data-testid='clear-search' and @type='button']")).Click();
+                //b.Click();
                 Thread.Sleep(10000);
             }
             catch {
@@ -201,7 +189,6 @@ namespace Automate
             {
                 d.SwitchTo().DefaultContent();
             }
-
         }
 
         static int CheckProjectsNum()
@@ -229,10 +216,9 @@ namespace Automate
             }
         }
         
-
         static bool CheckDuplicatePO(WebDriver d, IDictionary<String, String> row)
         {
-            // Clean the project invioce number into digits
+            // Clean the project invoice number into digits, aquired from Excel Title
             string s = row["Title"];
             string symbleNumber = Regex.Replace(s, @"([a-zA-Z]+)", "");
             string spaceNumber = Regex.Replace(symbleNumber, @"('+)", "");
