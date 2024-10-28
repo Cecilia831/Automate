@@ -2,7 +2,7 @@
 
 
 ###### Usage 
-[![Watch the video]()](https://www.loom.com/share/8b62a5c60a664bc6a173210764f1d31f?sid=06ea64ce-ea5a-4b85-9db5-1e5e862ac45d)
+[![](Demo.png)](https://www.loom.com/share/8b62a5c60a664bc6a173210764f1d31f?sid=06ea64ce-ea5a-4b85-9db5-1e5e862ac45d)
 ###### Description
 This is a project that inject financial data into cloud-based management software Buildertrend.
 
