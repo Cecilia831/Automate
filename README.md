@@ -1,4 +1,4 @@
-###### New Version 
+## New Version 
 
 [Link to new version --update 02-11-2025](https://github.com/Cecilia831/WinFormTesseractOCR)
 
