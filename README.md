@@ -1,5 +1,6 @@
-######## New Version 
-[![Link to new version]](https://github.com/Cecilia831/WinFormTesseractOCR)
+###### New Version 
+
+[Link to new version](https://github.com/Cecilia831/WinFormTesseractOCR) --update 02-11-2025
 
 ## Automate Readme
 
